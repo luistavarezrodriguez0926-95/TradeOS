@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/global.css"/>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -107,13 +108,13 @@
             </div>
         </div>
 
+        <!-- Main Layout -->
         <div class="grid grid-cols-12 gap-8">
-            <!-- Left Column: Navigation & AI Summary -->
-            <div class="col-span-12 lg:col-span-4 space-y-8">
-                <!-- Monthly Calendar Grid -->
-                <section class="glass-panel rounded-2xl p-6 ghost-border">
+            <!-- Left: Calendar Sidebar -->
+            <div class="col-span-12 lg:col-span-4 space-y-6">
+                <div class="glass-panel holographic p-6 rounded-2xl border border-outline-variant/10">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="font-headline font-bold text-lg" id="grid-month-display">October 2023</h3>
+                        <h3 id="calendar-title" class="text-white font-headline text-lg font-bold tracking-tight">Mars 2024</h3>
                         <div class="flex gap-2">
                             <button data-i18n="today" id="grid-today" class="px-2 py-0.5 text-[10px] font-bold text-tertiary bg-tertiary/10 rounded-md hover:bg-tertiary/20 transition-all uppercase tracking-tighter">Today</button>
                             <button id="grid-prev" class="material-symbols-outlined text-sm text-slate-400 hover:text-white">chevron_left</button>
@@ -132,9 +133,9 @@
                     <div class="grid grid-cols-7 border-t border-l border-white/5" id="month-grid">
                         <!-- Days populated by JS -->
                     </div>
-                </section>
+                </div>
 
-                <section class="glass-panel rounded-2xl p-6 border-l-4 border-secondary/50">
+                <section class="glass-panel holographic rounded-2xl p-6 border-l-4 border-secondary/50">
                     <div class="flex items-start gap-4 mb-6">
                         <div class="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
                             <span class="material-symbols-outlined">psychology</span>
@@ -152,7 +153,7 @@
                 </section>
 
                 <!-- Central Bank Speeches -->
-                <section class="glass-panel rounded-2xl p-6 ghost-border">
+                <section class="glass-panel holographic rounded-2xl p-6 ghost-border">
                     <h3 data-i18n="central_bank" class="font-headline font-bold text-lg mb-6">Central Bank Pulse</h3>
                     <div class="space-y-4">
                         <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
@@ -168,7 +169,7 @@
 
             <!-- Calendar Feed -->
             <div class="col-span-12 lg:col-span-8">
-                <div class="glass-panel rounded-2xl overflow-hidden">
+                <div class="glass-panel holographic rounded-2xl overflow-hidden">
                     <div class="flex items-center justify-between p-6 border-b border-white/5">
                         <div class="flex items-center gap-6">
                             <button id="prev-day" class="material-symbols-outlined text-slate-400 hover:text-on-surface">chevron_left</button>
@@ -413,16 +414,20 @@
         document.getElementById('event-form').onsubmit = async (e) => {
             e.preventDefault();
             const fd = new FormData(e.target);
-            await Storage.saveEvent({
+            const event = {
                 date: formatDate(currentDate),
                 title: fd.get('title'),
                 time: fd.get('time'),
                 impact: fd.get('impact')
-            });
-            e.target.reset();
-            document.getElementById('event-modal').classList.add('hidden');
-            await renderEvents();
-            await renderGrid();
+            };
+            try {
+                await Storage.saveEvent(event);
+                document.getElementById('event-modal').classList.add('hidden');
+                UIManager.showToast("Event synchronized with stellar clock.", "success");
+                renderEvents();
+            } catch (e) {
+                UIManager.showToast(e.message, "error");
+            }
         };
 
         // Profile Logic

@@ -8,8 +8,6 @@ import { i18n } from './i18n.js';
 
 export const UIManager = {
     /**
-     * Initialize UI based on User Profile.
-     */
     init: async () => {
         const profile = await Storage.getProfile();
         
@@ -18,6 +16,10 @@ export const UIManager = {
         
         // Apply Language
         UIManager.setLanguage(profile.language || 'en');
+        
+        // Apply Cosmic Effects
+        document.body.classList.add('cosmic-bg');
+        UIManager.initToastContainer();
         
         // Handle Feature Gating
         const currentPage = window.location.pathname.split('/').pop();
@@ -28,6 +30,44 @@ export const UIManager = {
         }
         
         return profile;
+    },
+
+    /**
+     * Initialize the toast container for notifications.
+     */
+    initToastContainer: () => {
+        if (!document.getElementById('toast-container')) {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            document.body.appendChild(container);
+        }
+    },
+
+    /**
+     * Show a cosmic toast notification.
+     * @param {string} message - The message to display.
+     * @param {string} type - 'success', 'error', or 'info'.
+     */
+    showToast: (message, type = 'info') => {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        const icon = type === 'success' ? 'check_circle' : type === 'error' ? 'error' : 'info';
+        toast.innerHTML = `
+            <span class="material-symbols-outlined">${icon}</span>
+            <span>${message}</span>
+        `;
+
+        container.appendChild(toast);
+
+        // Remove after 4 seconds
+        setTimeout(() => {
+            toast.classList.add('out');
+            setTimeout(() => toast.remove(), 400);
+        }, 4000);
     },
 
     /**

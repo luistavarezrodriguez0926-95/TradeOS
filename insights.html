@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/global.css"/>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -183,7 +184,7 @@
             
             container.innerHTML = `
                 <!-- Critical Pattern Card -->
-                <div class="lg:col-span-2 md:row-span-2 nebula-glass rounded-xl p-8 ghost-border relative overflow-hidden flex flex-col justify-between group">
+                <div class="lg:col-span-2 md:row-span-2 glass-panel holographic rounded-xl p-8 border border-outline-variant/10 relative overflow-hidden flex flex-col justify-between group">
                     <div class="absolute top-0 right-0 w-64 h-64 ${data.leakSeverity === 'critical' ? 'bg-error/10' : 'bg-primary/10'} blur-[100px] -mr-32 -mt-32"></div>
                     <div>
                         <div class="flex items-center gap-3 mb-6">
@@ -196,20 +197,21 @@
                     </div>
                 </div>
 
-                <!-- Correlation Card 1: Sleep -->
-                <div class="nebula-glass rounded-xl p-6 ghost-border relative overflow-hidden flex flex-col">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="w-2 h-2 rounded-full bg-tertiary"></span>
-                        <span class="font-label text-tertiary uppercase tracking-widest text-[10px] font-bold">Biometric Drift</span>
+                <!-- Sleep Correlation -->
+                <div class="col-span-12 lg:col-span-2 glass-panel holographic p-8 rounded-2xl border border-outline-variant/10">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-secondary/10 rounded-lg text-secondary">
+                            <span class="material-symbols-outlined">bedtime</span>
+                        </div>
+                        <h3 data-i18n="sleep_vs_performance" class="text-xl font-headline font-bold">Sleep vs Performance</h3>
                     </div>
-                    <h3 class="text-xl font-headline font-bold mb-3">Sleep Impact</h3>
                     <div class="flex justify-between items-end gap-2 h-16 mb-4">
                         <div class="flex-1 flex flex-col items-center">
-                            <div class="w-full bg-error/20" style="height: ${data.sleepCorrelation.poor}%"></div>
+                            <div class="w-full bg-error/20" style="height: ${data.sleepCorrelation.poor || 0}%"></div>
                             <span class="text-[8px] mt-2 opacity-50">< 7h Sleep</span>
                         </div>
                         <div class="flex-1 flex flex-col items-center">
-                            <div class="w-full bg-tertiary/20" style="height: ${data.sleepCorrelation.good}%"></div>
+                            <div class="w-full bg-tertiary/20" style="height: ${data.sleepCorrelation.good || 0}%"></div>
                             <span class="text-[8px] mt-2 opacity-50">> 7h Sleep</span>
                         </div>
                     </div>
@@ -217,15 +219,15 @@
                 </div>
 
                 <!-- Weekday Performance -->
-                <div class="nebula-glass rounded-xl p-6 ghost-border relative overflow-hidden flex flex-col md:col-span-1">
+                <div class="glass-panel holographic rounded-xl p-6 border border-outline-variant/10 relative overflow-hidden flex flex-col md:col-span-1">
                     <div class="flex items-center gap-2 mb-4">
                         <span class="w-2 h-2 rounded-full bg-primary"></span>
                         <span class="font-label text-primary uppercase tracking-widest text-[10px] font-bold">Flux Cycles</span>
                     </div>
                     <h3 class="text-xl font-headline font-bold mb-3">Weekday P/L</h3>
                     <div class="flex items-end gap-1 h-20 mb-4">
-                        ${[1,2,3,4,5].map(day => {
-                            const val = data.weekdayPerf[day];
+                        ${[1, 2, 3, 4, 5].map(day => {
+                            const val = data.weekdayPerf[day] || 0;
                             const height = Math.min(100, Math.max(10, Math.abs(val / 10))) + '%';
                             return `<div class="flex-1 ${val >= 0 ? 'bg-tertiary/30' : 'bg-error/30'} rounded-t-sm" style="height: ${height}"></div>`;
                         }).join('')}
@@ -236,23 +238,23 @@
                 </div>
 
                 <!-- Focus Mapping -->
-                <div class="lg:col-span-2 nebula-glass rounded-xl p-8 ghost-border relative overflow-hidden">
+                <div class="lg:col-span-2 glass-panel holographic rounded-xl p-8 border border-outline-variant/10 relative overflow-hidden">
                     <span class="font-label text-secondary uppercase tracking-widest text-xs font-bold mb-2 block">Habit Mapping</span>
                     <h3 class="text-2xl font-headline font-bold mb-8">Focus vs. Execution (R:R)</h3>
                     <div class="flex items-center gap-8">
                         <div class="flex-1">
                             <p class="text-xs text-slate-500 uppercase tracking-widest mb-1">High Focus Avg RR</p>
-                            <p class="text-3xl font-headline font-bold text-tertiary">${data.focusCorrelation.high}</p>
+                            <p class="text-3xl font-headline font-bold text-tertiary">${data.focusCorrelation.high || 0}</p>
                         </div>
                         <div class="flex-1">
                             <p class="text-xs text-slate-500 uppercase tracking-widest mb-1">Low Focus Avg RR</p>
-                            <p class="text-3xl font-headline font-bold text-error">${data.focusCorrelation.low}</p>
+                            <p class="text-3xl font-headline font-bold text-error">${data.focusCorrelation.low || 0}</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Recommendation -->
-                <div class="nebula-glass rounded-xl p-6 ghost-border flex flex-col justify-center text-center">
+                <!-- System Protocol -->
+                <div class="glass-panel holographic rounded-xl p-6 border border-outline-variant/10 flex flex-col justify-center text-center">
                     <div class="w-12 h-12 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">
                         <span class="material-symbols-outlined text-primary text-2xl">bolt</span>
                     </div>

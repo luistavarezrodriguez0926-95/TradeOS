@@ -22,8 +22,14 @@ export const Storage = {
     subscribeToTrades: (callback) => {
         const uid = getUid();
         const q = collection(db, "users", uid, "trades");
+        
+        // Initial load from cache
+        const cache = localStorage.getItem(`trades_${uid}`);
+        if (cache) callback(JSON.parse(cache));
+
         return onSnapshot(q, (snapshot) => {
             const trades = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            localStorage.setItem(`trades_${uid}`, JSON.stringify(trades));
             callback(trades);
         });
     },
@@ -34,9 +40,16 @@ export const Storage = {
     subscribeToAccount: (callback) => {
         const uid = getUid();
         const accountRef = doc(db, "users", uid, "settings", "account");
+
+        // Initial load from cache
+        const cache = localStorage.getItem(`account_${uid}`);
+        if (cache) callback(JSON.parse(cache));
+
         return onSnapshot(accountRef, (docSnap) => {
             if (docSnap.exists()) {
-                callback(docSnap.data());
+                const data = docSnap.data();
+                localStorage.setItem(`account_${uid}`, JSON.stringify(data));
+                callback(data);
             } else {
                 callback({
                     balance: 100000,

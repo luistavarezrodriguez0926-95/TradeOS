@@ -1,0 +1,128 @@
+/* TradeOS Global Cosmic Styles */
+
+:root {
+    --cosmic-nebula: linear-gradient(135deg, #0b0e15 0%, #171c26 50%, #0b0e15 100%);
+    --primary-glow: rgba(133, 173, 255, 0.4);
+    --secondary-glow: rgba(180, 134, 255, 0.4);
+    --tertiary-glow: rgba(38, 254, 220, 0.4);
+}
+
+/* Cosmic Animated Background */
+body.cosmic-bg {
+    background: var(--background);
+    position: relative;
+    overflow-x: hidden;
+}
+
+body.cosmic-bg::before {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(133, 173, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(180, 134, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(38, 254, 220, 0.02) 0%, transparent 60%);
+    animation: nebula-float 60s ease-in-out infinite alternate;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes nebula-float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-5%, -5%) scale(1.1); }
+}
+
+/* Enhanced Glassmorphism */
+.glass-panel {
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.light .glass-panel {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Holographic Border Effect */
+.holographic {
+    position: relative;
+    overflow: hidden;
+}
+
+.holographic::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background: conic-gradient(from 0deg at 50% 50%, transparent 0%, var(--primary) 25%, transparent 50%, var(--secondary) 75%, transparent 100%);
+    animation: rotate-hologram 4s linear infinite;
+    z-index: -1;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    padding: 2px;
+    opacity: 0.3;
+}
+
+@keyframes rotate-hologram {
+    to { transform: rotate(360deg); }
+}
+
+/* Toast System */
+#toast-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.toast {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    animation: toast-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    cursor: default;
+}
+
+.toast.success { border-left: 4px solid var(--tertiary); }
+.toast.error { border-left: 4px solid var(--error); }
+.toast.info { border-left: 4px solid var(--primary); }
+
+@keyframes toast-in {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.toast.out {
+    animation: toast-out 0.3s ease forwards;
+}
+
+@keyframes toast-out {
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+/* Micro-interactions */
+.btn-cosmic {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-cosmic:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 20px var(--primary-glow);
+}
