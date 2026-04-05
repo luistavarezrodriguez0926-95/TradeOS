@@ -56,6 +56,11 @@
             </nav>
         </div>
         <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 mr-4 bg-slate-900/50 p-1 rounded-lg border border-white/5">
+                <button onclick="UIManager.changeLanguage('en')" class="px-2 py-1 text-[10px] font-bold rounded hover:bg-white/10 transition-all">EN</button>
+                <div class="w-px h-3 bg-white/10"></div>
+                <button onclick="UIManager.changeLanguage('es')" class="px-2 py-1 text-[10px] font-bold rounded hover:bg-white/10 transition-all">ES</button>
+            </div>
             <div id="nav-profile" class="flex flex-col items-end hidden md:flex cursor-pointer hover:opacity-80 transition-all" onclick="openProfileModal()">
                 <span id="user-display-name" class="text-sm font-bold text-on-surface">Admiral</span>
                 <span id="user-email" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest"></span>

@@ -55,7 +55,11 @@
                 <a data-i18n="insights" class="text-slate-400 hover:text-cyan-200 transition-colors duration-300" href="insights.html">Insights</a>
             </div>
         </div>
-        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 mr-4 bg-slate-900/50 p-1 rounded-lg border border-white/5">
+                <button onclick="UIManager.changeLanguage('en')" class="px-2 py-1 text-[10px] font-bold rounded hover:bg-white/10 transition-all">EN</button>
+                <div class="w-px h-3 bg-white/10"></div>
+                <button onclick="UIManager.changeLanguage('es')" class="px-2 py-1 text-[10px] font-bold rounded hover:bg-white/10 transition-all">ES</button>
+            </div>
             <div id="nav-profile" class="flex flex-col items-end hidden md:flex cursor-pointer hover:opacity-80 transition-all" onclick="openProfileModal()">
                 <span id="user-display-name" class="text-sm font-bold text-on-surface">Admiral</span>
                 <span id="user-email" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest"></span>
@@ -121,8 +125,16 @@
                                 <option value="ETH/USD">ETH / USD</option>
                                 <option value="SOL/USD">SOL / USD</option>
                                 <option value="EUR/USD">EUR / USD</option>
+                                <option value="NASDAQ100">NASDAQ 100</option>
+                                <option value="SP500">S&P 500</option>
                                 <option value="GOLD">GOLD</option>
                             </select>
+                        </div>
+
+                        <!-- Confluences -->
+                        <div>
+                            <label data-i18n="confluences" class="block text-xs font-label uppercase tracking-widest text-slate-500 mb-2">Confluences / Rationale</label>
+                            <textarea id="notes" class="w-full bg-surface-container-high px-4 py-4 rounded-md border border-outline-variant/10 focus:outline-none focus:border-primary text-sm h-24" placeholder="Log your edge details..."></textarea>
                         </div>
 
                         <!-- Price Inputs -->
@@ -236,7 +248,8 @@
             result: document.getElementById('result'),
             saveBtn: document.getElementById('save-trade'),
             liveRR: document.getElementById('live-rr'),
-            summary: document.getElementById('summary-content')
+            summary: document.getElementById('summary-content'),
+            notes: document.getElementById('notes')
         };
 
         const updateRR = () => {
@@ -246,6 +259,13 @@
             if (dom.entryPrice.value && dom.stopLoss.value && dom.takeProfit.value) {
                 const risk = Math.abs(parseFloat(dom.entryPrice.value) - parseFloat(dom.stopLoss.value));
                 const reward = Math.abs(parseFloat(dom.takeProfit.value) - parseFloat(dom.entryPrice.value));
+                const notesHtml = dom.notes.value ? `
+                    <div class="mt-6 pt-6 border-t border-white/5">
+                        <p class="text-xs uppercase tracking-widest text-slate-500 mb-2" data-i18n="notes">Notes</p>
+                        <p class="text-sm text-on-surface italic">"${dom.notes.value}"</p>
+                    </div>
+                ` : '';
+
                 dom.summary.innerHTML = `
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-surface-container-high p-4 rounded-lg">
@@ -257,7 +277,8 @@
                             <p class="text-xl font-bold text-tertiary">${reward.toFixed(2)}</p>
                         </div>
                     </div>
-                    <p class="mt-4 text-sm">Potential Reward is <span class="text-tertiary font-bold">${rr}x</span> your Risk.</p>
+                    <p class="mt-4 text-sm font-bold text-on-surface">Potential Reward is <span class="text-tertiary">${rr}x</span> your Risk.</p>
+                    ${notesHtml}
                 `;
             }
         };
@@ -281,7 +302,7 @@
         dom.btnBuy.onclick = () => setType('BUY');
         dom.btnSell.onclick = () => setType('SELL');
         
-        [dom.entryPrice, dom.stopLoss, dom.takeProfit].forEach(el => {
+        [dom.entryPrice, dom.stopLoss, dom.takeProfit, dom.notes].forEach(el => {
             el.oninput = updateRR;
         });
 
@@ -297,6 +318,7 @@
                 entryPrice: dom.entryPrice.value,
                 stopLoss: dom.stopLoss.value,
                 takeProfit: dom.takeProfit.value,
+                notes: dom.notes.value,
                 result: dom.result.value || 0,
                 rRatio: Storage.calculateR(currentType, dom.entryPrice.value, dom.stopLoss.value, dom.takeProfit.value)
             };
