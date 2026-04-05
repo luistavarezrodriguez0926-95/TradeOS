@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>TradeOS | New Trade</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#85adff",
+                        "secondary": "#b486ff",
+                        "tertiary": "#26fedc",
+                        "error": "#ff6e84",
+                        "background": "var(--background)",
+                        "on-surface": "var(--on-surface)",
+                        "surface-container-high": "var(--surface-container-high)",
+                        "surface-container-low": "var(--surface-container-low)",
+                        "outline-variant": "var(--outline-variant)",
+                        "on-surface-variant": "#a9abb4"
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        :root {
+            --background: #0b0e15;
+            --on-surface: #e7e7f1;
+            --surface-container-high: #1c1f28;
+            --surface-container-low: #10131b;
+            --outline-variant: #454850;
+        }
+        body { background-color: var(--background); color: var(--on-surface); font-family: 'Manrope', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .glass-panel { background: rgba(34, 38, 47, 0.4); backdrop-filter: blur(20px); }
+        .light .glass-panel { background: rgba(255, 255, 255, 0.7); border-color: rgba(0,0,0,0.05); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary/30 min-h-screen">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-slate-950/40 backdrop-blur-xl shadow-[0_20px_40px_rgba(133,173,255,0.08)]">
+        <div class="flex items-center gap-12">
+            <a href="index.html" class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-['Space_Grotesk'] tracking-tight">TradeOS</a>
+            <div class="hidden md:flex items-center gap-8 font-['Space_Grotesk'] tracking-tight">
+                <a data-i18n="dashboard" class="text-slate-400 hover:text-cyan-200 transition-colors duration-300" href="index.html">Dashboard</a>
+                <a data-i18n="journal" class="text-cyan-200 transition-colors duration-300" href="journal.html">Journal</a>
+                <a data-i18n="insights" class="text-slate-400 hover:text-cyan-200 transition-colors duration-300" href="insights.html">Insights</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div id="nav-profile" class="flex flex-col items-end hidden md:flex cursor-pointer hover:opacity-80 transition-all" onclick="openProfileModal()">
+                <span id="user-display-name" class="text-sm font-bold text-on-surface">Admiral</span>
+                <span id="user-email" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest"></span>
+            </div>
+            <img id="user-avatar" onclick="openProfileModal()" alt="User Avatar" class="w-10 h-10 rounded-full border border-primary/20 bg-surface-container-low p-1 cursor-pointer hover:border-primary transition-all" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"/>
+            <button id="logout-btn" data-i18n="logout" class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all">Logout</button>
+        </div>
+    </nav>
+
+    <!-- SideNavBar -->
+    <aside class="fixed left-0 top-0 h-screen z-40 flex flex-col pt-24 bg-slate-950/60 backdrop-blur-2xl w-64 font-['Manrope'] font-medium text-sm">
+        <nav class="flex-1 flex flex-col gap-1">
+            <a class="flex items-center gap-4 px-6 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all" href="index.html">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span data-i18n="dashboard">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-4 px-6 py-3 text-cyan-300 bg-cyan-500/10 shadow-[0_0_15px_rgba(38,254,220,0.3)] rounded-r-full" href="trade-entry.html">
+                <span class="material-symbols-outlined">add_chart</span>
+                <span data-i18n="new_trade">New Trade</span>
+            </a>
+            <a class="flex items-center gap-4 px-6 py-3 text-slate-500 hover:text-slate-200 transition-all font-medium text-sm" href="journal.html">
+                <span class="material-symbols-outlined">history_edu</span>
+                <span data-i18n="journal">Journal</span>
+            </a>
+            <a class="flex items-center gap-4 px-6 py-3 text-slate-500 hover:text-slate-200 transition-all font-medium text-sm" href="calendar.html">
+                <span class="material-symbols-outlined">calendar_month</span>
+                <span data-i18n="calendar">Calendar</span>
+            </a>
+            <a class="flex items-center gap-4 px-6 py-3 text-slate-500 hover:text-slate-200 transition-all font-medium text-sm" href="habits.html">
+                <span class="material-symbols-outlined">auto_graph</span>
+                <span data-i18n="habits">Habits</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="pl-64 pt-24 min-h-screen">
+        <div class="max-w-6xl mx-auto p-8">
+            <header class="mb-12 flex justify-between items-end">
+                <div>
+                    <h1 data-i18n="new_trade" class="font-headline text-5xl font-bold tracking-tight mb-2">New Trade</h1>
+                    <p data-i18n="execute_positions" class="text-on-surface-variant font-body" id="header-subtitle">Execute positions within the cosmic flow.</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-label text-xs uppercase tracking-widest text-slate-500 mb-1">R:R Ratio</p>
+                    <p class="font-headline text-3xl font-bold text-tertiary-fixed" id="live-rr">0.00</p>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-12 gap-6 items-start">
+                <div class="col-span-12 lg:col-span-5 bg-surface-container-low rounded-xl p-8 shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-outline-variant/10">
+                    <!-- Buy/Sell Toggle -->
+                    <div class="flex p-1 bg-background rounded-lg mb-8">
+                        <button id="btn-buy" data-i18n="buy" class="flex-1 py-3 px-4 rounded-md font-bold text-sm flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-on-primary">BUY</button>
+                        <button id="btn-sell" data-i18n="sell" class="flex-1 py-3 px-4 rounded-md font-bold text-sm flex items-center justify-center gap-2 text-on-surface-variant hover:text-on-surface transition-colors">SELL</button>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Asset -->
+                        <div>
+                            <label data-i18n="select_asset" class="block text-xs font-label uppercase tracking-widest text-slate-500 mb-2">Select Asset</label>
+                            <select id="asset" class="w-full bg-surface-container-high px-4 py-4 rounded-md border border-outline-variant/10 focus:outline-none focus:border-primary transition-all font-bold appearance-none">
+                                <option value="BTC/USD">BTC / USD</option>
+                                <option value="ETH/USD">ETH / USD</option>
+                                <option value="SOL/USD">SOL / USD</option>
+                                <option value="EUR/USD">EUR / USD</option>
+                                <option value="GOLD">GOLD</option>
+                            </select>
+                        </div>
+
+                        <!-- Price Inputs -->
+                        <div>
+                            <label data-i18n="entry_price" class="block text-xs font-label uppercase tracking-widest text-slate-500 mb-2">Entry Price</label>
+                            <input id="entry-price" type="number" step="any" class="w-full bg-surface-container-high px-4 py-4 rounded-md border border-outline-variant/10 focus:outline-none focus:border-primary text-xl font-headline font-medium" placeholder="0.00"/>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label data-i18n="stop_loss" class="block text-xs font-label uppercase tracking-widest text-slate-500 mb-2">Stop Loss</label>
+                                <input id="stop-loss" type="number" step="any" class="w-full bg-surface-container-high px-4 py-4 rounded-md border border-outline-variant/10 focus:outline-none focus:border-error text-error font-medium" placeholder="0.00"/>
+                            </div>
+                            <div>
+                                <label data-i18n="take_profit" class="block text-xs font-label uppercase tracking-widest text-slate-500 mb-2">Take Profit</label>
+                                <input id="take-profit" type="number" step="any" class="w-full bg-surface-container-high px-4 py-4 rounded-md border border-outline-variant/10 focus:outline-none focus:border-tertiary text-tertiary font-medium" placeholder="0.00"/>
+                            </div>
+                        </div>
+
+                        <!-- Result (Optional) -->
+                        <div>
+                            <label data-i18n="result_pl" class="block text-xs font-label uppercase tracking-widest text-slate-500 mb-2">Result (P/L)</label>
+                            <input id="result" type="number" step="any" class="w-full bg-surface-container-high px-4 py-4 rounded-md border border-outline-variant/10 focus:outline-none focus:border-primary text-lg font-medium" placeholder="Enter profit or loss amount"/>
+                        </div>
+                    </div>
+
+                    <button id="save-trade" data-i18n="save_trade" class="w-full mt-8 py-5 rounded-md bg-gradient-to-r from-primary to-secondary text-on-primary font-headline font-bold text-lg shadow-[0_0_25px_rgba(109,159,255,0.4)] hover:shadow-[0_0_35px_rgba(109,159,255,0.6)] transition-all scale-100 active:scale-95">
+                        SAVE TRADE
+                    </button>
+                </div>
+
+                <!-- Stats/Visual Area -->
+                <div class="col-span-12 lg:col-span-7 flex flex-col gap-6">
+                    <div class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/10">
+                        <h3 data-i18n="trade_summary" class="font-headline font-bold text-xl mb-6">Trade Summary</h3>
+                        <div id="summary-content" class="space-y-4 text-slate-400">
+                            <p data-i18n="enter_trade_details">Enter trade details to see projected metrics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Profile Modal (Injected for sync) -->
+    <div id="profile-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-panel p-8 rounded-2xl w-full max-w-md border border-white/10">
+            <h3 data-i18n="commander_profile" class="text-2xl font-headline font-bold mb-6">Commander Profile</h3>
+            <form id="profile-form" class="space-y-4">
+                <div>
+                    <label data-i18n="display_name" class="block text-xs uppercase text-slate-500 mb-1">Display Name</label>
+                    <input type="text" name="displayName" required class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                </div>
+                <div>
+                    <label data-i18n="avatar_url" class="block text-xs uppercase text-slate-500 mb-1">Avatar URL</label>
+                    <input type="text" name="avatar" required class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label data-i18n="language" class="block text-xs uppercase text-slate-500 mb-1">Language</label>
+                        <select name="language" class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label data-i18n="theme" class="block text-xs uppercase text-slate-500 mb-1">Theme</label>
+                        <select name="theme" class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                            <option value="dark">Dark</option>
+                            <option value="light">Light</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button data-i18n="cancel" type="button" onclick="document.getElementById('profile-modal').classList.add('hidden')" class="flex-1 py-3 text-slate-400 font-bold">Cancel</button>
+                    <button data-i18n="update_profile" type="submit" class="flex-1 py-3 bg-secondary text-on-primary font-bold rounded-lg hover:shadow-[0_0_15px_#b486ff]">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, signOut, onAuthStateChanged } from './js/firebase-config.js';
+        import { Storage } from './js/storage.js';
+        import { UIManager } from './js/ui-manager.js';
+        import { i18n } from './js/i18n.js';
+
+        let currentType = 'BUY';
+
+        // Auth Guard & Profile Load
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'auth.html';
+            } else {
+                document.getElementById('user-email').textContent = user.email;
+                const profile = await UIManager.init();
+                document.getElementById('user-display-name').textContent = profile.displayName;
+                document.getElementById('user-avatar').src = profile.avatar;
+            }
+        });
+
+        document.getElementById('logout-btn').onclick = () => signOut(auth);
+
+        const dom = {
+            btnBuy: document.getElementById('btn-buy'),
+            btnSell: document.getElementById('btn-sell'),
+            asset: document.getElementById('asset'),
+            entryPrice: document.getElementById('entry-price'),
+            stopLoss: document.getElementById('stop-loss'),
+            takeProfit: document.getElementById('take-profit'),
+            result: document.getElementById('result'),
+            saveBtn: document.getElementById('save-trade'),
+            liveRR: document.getElementById('live-rr'),
+            summary: document.getElementById('summary-content')
+        };
+
+        const updateRR = () => {
+            const rr = Storage.calculateR(currentType, dom.entryPrice.value, dom.stopLoss.value, dom.takeProfit.value);
+            dom.liveRR.innerText = rr > 0 ? rr : '0.00';
+            
+            if (dom.entryPrice.value && dom.stopLoss.value && dom.takeProfit.value) {
+                const risk = Math.abs(parseFloat(dom.entryPrice.value) - parseFloat(dom.stopLoss.value));
+                const reward = Math.abs(parseFloat(dom.takeProfit.value) - parseFloat(dom.entryPrice.value));
+                dom.summary.innerHTML = `
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-surface-container-high p-4 rounded-lg">
+                            <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Risk Amount</p>
+                            <p class="text-xl font-bold text-error">${risk.toFixed(2)}</p>
+                        </div>
+                        <div class="bg-surface-container-high p-4 rounded-lg">
+                            <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Reward Amount</p>
+                            <p class="text-xl font-bold text-tertiary">${reward.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-sm">Potential Reward is <span class="text-tertiary font-bold">${rr}x</span> your Risk.</p>
+                `;
+            }
+        };
+
+        const setType = (type) => {
+            currentType = type;
+            if (type === 'BUY') {
+                dom.btnBuy.classList.add('bg-gradient-to-r', 'from-primary', 'to-secondary', 'text-on-primary');
+                dom.btnBuy.classList.remove('text-on-surface-variant');
+                dom.btnSell.classList.remove('bg-gradient-to-r', 'from-primary', 'to-secondary', 'text-on-primary');
+                dom.btnSell.classList.add('text-on-surface-variant');
+            } else {
+                dom.btnSell.classList.add('bg-gradient-to-r', 'from-primary', 'to-secondary', 'text-on-primary');
+                dom.btnSell.classList.remove('text-on-surface-variant');
+                dom.btnBuy.classList.remove('bg-gradient-to-r', 'from-primary', 'to-secondary', 'text-on-primary');
+                dom.btnBuy.classList.add('text-on-surface-variant');
+            }
+            updateRR();
+        };
+
+        dom.btnBuy.onclick = () => setType('BUY');
+        dom.btnSell.onclick = () => setType('SELL');
+        
+        [dom.entryPrice, dom.stopLoss, dom.takeProfit].forEach(el => {
+            el.oninput = updateRR;
+        });
+
+        dom.saveBtn.onclick = async () => {
+            if (!dom.entryPrice.value || !dom.stopLoss.value || !dom.takeProfit.value) {
+                alert('Please fill in all entry fields.');
+                return;
+            }
+
+            const trade = {
+                asset: dom.asset.value,
+                type: currentType,
+                entryPrice: dom.entryPrice.value,
+                stopLoss: dom.stopLoss.value,
+                takeProfit: dom.takeProfit.value,
+                result: dom.result.value || 0,
+                rRatio: Storage.calculateR(currentType, dom.entryPrice.value, dom.stopLoss.value, dom.takeProfit.value)
+            };
+
+            try {
+                dom.saveBtn.disabled = true;
+                dom.saveBtn.textContent = 'EXECUTING...';
+                await Storage.saveTrade(trade);
+                alert('Trade saved successfully!');
+                window.location.href = 'journal.html';
+            } catch (e) {
+                alert(e.message);
+                dom.saveBtn.disabled = false;
+                dom.saveBtn.textContent = 'SAVE TRADE';
+            }
+        };
+
+        // Profile Logic
+        window.openProfileModal = async () => {
+            const profile = await Storage.getProfile();
+            const form = document.getElementById('profile-form');
+            form.elements.displayName.value = profile.displayName;
+            form.elements.avatar.value = profile.avatar;
+            form.elements.language.value = profile.language || 'en';
+            form.elements.theme.value = profile.theme || 'dark';
+            document.getElementById('profile-modal').classList.remove('hidden');
+        };
+
+        const profileForm = document.getElementById('profile-form');
+        profileForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const fd = new FormData(profileForm);
+            const newProfile = {
+                displayName: fd.get('displayName'),
+                avatar: fd.get('avatar'),
+                language: fd.get('language'),
+                theme: fd.get('theme')
+            };
+            
+            UIManager.setTheme(newProfile.theme);
+            UIManager.setLanguage(newProfile.language);
+            await Storage.saveProfile(newProfile);
+            
+            document.getElementById('user-display-name').textContent = newProfile.displayName;
+            document.getElementById('user-avatar').src = newProfile.avatar;
+            document.getElementById('profile-modal').classList.add('hidden');
+        };
+    </script>
+</body>
+</html>

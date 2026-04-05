@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#000000",
+                    "secondary-container": "#6801d1",
+                    "on-tertiary-container": "#005d4f",
+                    "on-secondary-fixed-variant": "#6b0cd4",
+                    "surface-tint": "#85adff",
+                    "primary-fixed": "#6d9fff",
+                    "error": "#ff6e84",
+                    "error-dim": "#d73357",
+                    "secondary": "#b486ff",
+                    "secondary-dim": "#9149fa",
+                    "tertiary-dim": "#00e8c9",
+                    "tertiary": "#b6ffed",
+                    "on-secondary-fixed": "#470093",
+                    "secondary-fixed": "#dec8ff",
+                    "on-secondary-container": "#e6d4ff",
+                    "on-surface": "#e7e7f1",
+                    "surface-container-highest": "#22262f",
+                    "tertiary-fixed-dim": "#00efce",
+                    "outline": "#73757e",
+                    "secondary-fixed-dim": "#d3b7ff",
+                    "on-primary-container": "#00214f",
+                    "on-tertiary": "#006657",
+                    "on-secondary": "#2d0062",
+                    "on-error": "#490013",
+                    "surface-container-low": "#10131b",
+                    "outline-variant": "#454850",
+                    "primary-fixed-dim": "#5291ff",
+                    "background": "#0b0e15",
+                    "tertiary-container": "#26fedc",
+                    "primary-container": "#6d9fff",
+                    "on-primary": "#002c66",
+                    "primary": "#85adff",
+                    "primary-dim": "#1470e8",
+                    "error-container": "#a70138",
+                    "on-background": "#e7e7f1",
+                    "on-tertiary-fixed": "#00483d",
+                    "on-primary-fixed-variant": "#002a61",
+                    "surface-variant": "#22262f",
+                    "on-surface-variant": "#a9abb4",
+                    "on-primary-fixed": "#000000",
+                    "tertiary-fixed": "#26fedc",
+                    "on-error-container": "#ffb2b9",
+                    "surface-bright": "#282c36",
+                    "inverse-primary": "#005bc3",
+                    "surface": "#0b0e15",
+                    "inverse-on-surface": "#53555d",
+                    "on-tertiary-fixed-variant": "#006859",
+                    "inverse-surface": "#faf9ff",
+                    "surface-dim": "#0b0e15",
+                    "surface-container": "#161922",
+                    "surface-container-high": "#1c1f28"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Space Grotesk"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(34, 38, 47, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .nebula-glow {
+            box-shadow: 0 0 15px rgba(38, 254, 220, 0.15);
+        }
+        .nebula-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30 selection:text-primary">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-slate-950/40 backdrop-blur-xl shadow-[0_20px_40px_rgba(133,173,255,0.08)]">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-['Space_Grotesk'] tracking-tight">TradeOS</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-cyan-300 border-b-2 border-cyan-300 pb-1 font-['Space_Grotesk'] tracking-tight hover:text-cyan-200 transition-colors duration-300" href="#">Dashboard</a>
+<a class="text-slate-400 font-['Space_Grotesk'] tracking-tight hover:text-cyan-200 transition-colors duration-300" href="#">Analytics</a>
+<a class="text-slate-400 font-['Space_Grotesk'] tracking-tight hover:text-cyan-200 transition-colors duration-300" href="#">Insights</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-low border-none rounded-md px-4 py-2 text-sm focus:ring-1 focus:ring-primary w-64 transition-all" placeholder="Search systems..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2 text-slate-500 text-sm">search</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="scale-95 active:scale-90 text-slate-400 hover:text-cyan-200 transition-colors duration-300">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="scale-95 active:scale-90 text-slate-400 hover:text-cyan-200 transition-colors duration-300">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<img alt="User Cosmic Avatar" class="w-8 h-8 rounded-full border border-primary/20" data-alt="portrait of a focused professional with soft ambient blue lighting and technical overlays on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq8vp424nyY8URgkfG9oRwaLSmCUcl8odVVIwa-NMNuPjLRbzPJ7Wt7FEp0t8thPkyFLg9fa6y9wBCU9iOcFKvh79JlVWUDXbFPCIsmtk4sD2pJajsICRh23JkwuSXkKIpVqHg5297eCgkka5BY0qktPEMcGtqLhOhuzTG00JItv3_-vJwdLBmAtWx-cg2SK3fIJg6Y9-xa3zILkrmJisefdl8IMPDiW0KtIOHdePvZt_mWtVY5dByu7eEQUJaWGrXigV3e2uOQQ"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation -->
+<aside class="fixed left-0 top-0 h-screen z-40 flex flex-col pt-24 pb-8 bg-slate-950/60 backdrop-blur-2xl w-64 tonal-shift bg-slate-900/50">
+<div class="px-6 mb-8 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<div>
+<p class="font-headline font-bold text-sm tracking-tight">Commander</p>
+<p class="text-[10px] text-tertiary font-medium uppercase tracking-widest nebula-pulse">System Online</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1 px-3">
+<a class="flex items-center gap-3 px-4 py-3 text-cyan-300 bg-cyan-500/10 shadow-[0_0_15px_rgba(38,254,220,0.3)] rounded-r-full font-['Manrope'] font-medium text-sm ease-out duration-300 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all font-['Manrope'] font-medium text-sm ease-out duration-300 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="add_chart">add_chart</span>
+                Trades
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all font-['Manrope'] font-medium text-sm ease-out duration-300 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="auto_graph">auto_graph</span>
+                Habits
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all font-['Manrope'] font-medium text-sm ease-out duration-300 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all font-['Manrope'] font-medium text-sm ease-out duration-300 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+                AI Insights
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all font-['Manrope'] font-medium text-sm ease-out duration-300 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+                Strategy
+            </a>
+</nav>
+<div class="px-6 mt-4">
+<button class="w-full py-3 bg-gradient-to-r from-primary to-secondary text-on-primary-fixed rounded-md font-bold text-sm tracking-tight transition-all hover:brightness-110 shadow-lg shadow-primary/20">
+                New Trade
+            </button>
+</div>
+<div class="mt-auto px-3 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+                Support
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 p-8 min-h-screen relative overflow-hidden">
+<!-- Abstract Background Decorative Elements -->
+<div class="absolute top-[-10%] right-[-10%] w-96 h-96 bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="absolute bottom-[5%] left-[5%] w-64 h-64 bg-secondary/10 blur-[100px] rounded-full pointer-events-none"></div>
+<!-- Editorial Header Section -->
+<section class="flex flex-col md:flex-row justify-between items-end gap-8 mb-12">
+<div class="space-y-2">
+<h1 class="text-6xl font-headline font-bold tracking-tighter text-on-surface">System Performance</h1>
+<p class="text-on-surface-variant max-w-md font-body leading-relaxed">Celestial cycle 482 analysis. Market liquidity is currently following the <span class="text-tertiary">Orion Shift</span> pattern.</p>
+</div>
+<div class="flex gap-4">
+<div class="glass-panel p-4 rounded-xl nebula-glow text-right">
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1 font-label">Account Equity</p>
+<p class="text-3xl font-headline font-bold text-primary">$2,482,904.12</p>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6 items-start">
+<!-- Hero Metric Card: P&L -->
+<div class="col-span-12 lg:col-span-8 glass-panel p-8 rounded-2xl relative overflow-hidden group">
+<div class="flex justify-between items-start mb-12">
+<div>
+<p class="text-on-surface-variant font-label text-sm uppercase tracking-widest">Cumulative Profit / Loss</p>
+<h2 class="text-5xl font-headline font-bold mt-2 text-on-surface">+$42,109.40 <span class="text-tertiary text-lg font-medium ml-2">▲ 14.2%</span></h2>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-surface-container-high rounded text-xs font-label hover:bg-primary/20 transition-all">1D</button>
+<button class="px-3 py-1 bg-primary/20 text-primary rounded text-xs font-label transition-all">1W</button>
+<button class="px-3 py-1 bg-surface-container-high rounded text-xs font-label hover:bg-primary/20 transition-all">1M</button>
+</div>
+</div>
+<!-- Abstract Glow Chart Area -->
+<div class="h-64 flex items-end gap-1 relative">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent"></div>
+<!-- Representative glowing path using SVG for better visual control -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<defs>
+<lineargradient id="line-grad" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#85adff"></stop>
+<stop offset="50%" stop-color="#b486ff"></stop>
+<stop offset="100%" stop-color="#b6ffed"></stop>
+</lineargradient>
+<filter id="glow">
+<fegaussianblur result="coloredBlur" stddeviation="1.5"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<path d="M0,80 Q10,75 20,85 T40,60 T60,70 T80,30 T100,45" fill="none" filter="url(#glow)" stroke="url(#line-grad)" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<!-- Win Rate Radial / Card -->
+<div class="col-span-12 lg:col-span-4 grid grid-rows-2 gap-6 h-full">
+<div class="glass-panel p-6 rounded-2xl flex flex-col justify-between">
+<div class="flex justify-between items-center">
+<p class="text-on-surface-variant font-label text-sm uppercase tracking-widest">Efficiency</p>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">target</span>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="text-4xl font-headline font-bold">68.4%</p>
+<p class="text-xs text-on-surface-variant">Win Rate (Last 300 Trades)</p>
+</div>
+<div class="w-16 h-16 rounded-full border-4 border-surface-container-highest border-t-secondary relative flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-secondary nebula-pulse"></div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-2xl bg-gradient-to-br from-surface-container-high to-surface-container">
+<p class="text-on-surface-variant font-label text-sm uppercase tracking-widest mb-4">Market Sentiment</p>
+<div class="space-y-4">
+<div class="flex justify-between text-xs">
+<span class="text-tertiary">Bullish</span>
+<span class="text-error">Bearish</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-tertiary" style="width: 72%;"></div>
+<div class="h-full bg-error" style="width: 28%;"></div>
+</div>
+<p class="text-[10px] text-center text-on-surface-variant italic">Aggregated data from 12 planetary exchanges</p>
+</div>
+</div>
+</div>
+<!-- Strategy Panel -->
+<div class="col-span-12 lg:col-span-5 glass-panel p-6 rounded-2xl">
+<h3 class="font-headline font-bold text-lg mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">strategy</span>
+                    Active Protocols
+                </h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-outline-variant/10 group hover:border-primary/30 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">auto_fix_high</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Alpha Nebula v4</p>
+<p class="text-[10px] text-on-surface-variant">Mean Reversion • High Freq</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold text-tertiary">Active</p>
+<p class="text-[10px] text-on-surface-variant">42 trades / hr</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-outline-variant/10 group hover:border-secondary/30 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-md bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">trending_up</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Cosmic Momentum</p>
+<p class="text-[10px] text-on-surface-variant">Trend Following • Swing</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold text-on-surface-variant">Paused</p>
+<p class="text-[10px] text-on-surface-variant">Risk Limit</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Signal / Execution List -->
+<div class="col-span-12 lg:col-span-7 glass-panel p-6 rounded-2xl">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">history_edu</span>
+                        Recent Executions
+                    </h3>
+<button class="text-xs text-primary font-label hover:underline">View Journal</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="text-[10px] uppercase tracking-widest text-on-surface-variant">
+<tr>
+<th class="pb-4 font-medium">Asset</th>
+<th class="pb-4 font-medium">Type</th>
+<th class="pb-4 font-medium">Entry</th>
+<th class="pb-4 font-medium">Size</th>
+<th class="pb-4 font-medium text-right">Result</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<tr class="hover:bg-surface-container-high transition-all cursor-pointer group">
+<td class="py-4 font-bold text-on-surface">SOL/USDT</td>
+<td class="py-4"><span class="px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary text-[10px]">LONG</span></td>
+<td class="py-4 font-mono">$104.28</td>
+<td class="py-4 text-on-surface-variant">2,400 Units</td>
+<td class="py-4 text-right font-bold text-tertiary">+$1,402.10</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-all cursor-pointer group border-t border-outline-variant/5">
+<td class="py-4 font-bold text-on-surface">BTC/USDT</td>
+<td class="py-4"><span class="px-2 py-0.5 rounded-full bg-error/10 text-error text-[10px]">SHORT</span></td>
+<td class="py-4 font-mono">$64,120.00</td>
+<td class="py-4 text-on-surface-variant">0.5 Units</td>
+<td class="py-4 text-right font-bold text-error">-$240.15</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-all cursor-pointer group border-t border-outline-variant/5">
+<td class="py-4 font-bold text-on-surface">ETH/USDT</td>
+<td class="py-4"><span class="px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary text-[10px]">LONG</span></td>
+<td class="py-4 font-mono">$3,421.12</td>
+<td class="py-4 text-on-surface-variant">12 Units</td>
+<td class="py-4 text-right font-bold text-tertiary">+$890.40</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Floating Action Component: System Alert -->
+<div class="fixed bottom-8 right-8 z-50">
+<div class="glass-panel p-4 rounded-xl border border-primary/20 shadow-2xl flex items-center gap-4 animate-bounce-subtle">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img alt="Nebula AI Avatar" class="w-full h-full object-cover" data-alt="abstract digital representation of a sentient ai mind with glowing network nodes and celestial light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAymV4QikTfJZzcHUoMufTEAQcUKuw8sMDx2GAbrqbzRiABM3f3hiX-AetjIBNMDoWCSRcyf7LPLWgqBCYwd03uUy-tYa6-wJF93Q4SHIXIgWByMATOdm_PNgBT6yNPXoYKM37gWwCY6LA8-NAPar3WnVg9kIGzRCm5YuPhAxlxpxtiO2a4ZnNdp1rZ4AZdurUsOCG5Hu-izrxdxEVyFfOY56AmDC6OgblN7xY4Ayeokoo2BWUihEXEkzWdAI0ddvmKnVlPyRMTDw"/>
+</div>
+<div>
+<p class="text-xs font-bold text-primary">Nebula AI Insight</p>
+<p class="text-[10px] text-on-surface-variant">"BTC Liquidity gap detected at $63,800. Adjusting exposure."</p>
+</div>
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+</div>
+</main>
+</body></html>

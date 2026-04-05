@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>TradeOS | Authentication</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#85adff",
+                        "secondary": "#b486ff",
+                        "tertiary": "#26fedc",
+                        "error": "#ff6e84",
+                        "background": "#0b0e15",
+                        "on-surface": "#e7e7f1",
+                        "surface-container-high": "#1c1f28",
+                        "surface-container-low": "#10131b",
+                        "outline-variant": "#454850"
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { background-color: #0b0e15; color: #e7e7f1; font-family: 'Manrope', sans-serif; }
+        .glass-panel { background: rgba(34, 38, 47, 0.4); backdrop-filter: blur(20px); }
+        .auth-card { width: 100%; max-width: 400px; }
+        .gradient-text { background: linear-gradient(to right, #85adff, #b486ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex items-center justify-center p-6">
+    
+    <div class="auth-card glass-panel p-10 rounded-3xl border border-outline-variant/20 shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold font-['Space_Grotesk'] tracking-tighter gradient-text">TradeOS</h1>
+            <p class="text-slate-500 mt-2 text-sm" id="auth-subtitle">Initialize your session.</p>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="space-y-4">
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 ml-1">Email Terminal</label>
+                <input type="email" name="email" required placeholder="commander@tradeos.io" class="w-full bg-slate-900/50 border border-white/5 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
+            </div>
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 ml-1">Access Key</label>
+                <input type="password" name="password" required placeholder="••••••••" class="w-full bg-slate-900/50 border border-white/5 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
+            </div>
+            <p id="login-error" class="text-error text-xs hidden"></p>
+            <button type="submit" class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-slate-950 font-bold rounded-xl shadow-lg hover:shadow-primary/20 hover:brightness-110 transition-all uppercase tracking-widest text-xs">
+                Link Session
+            </button>
+            <div class="pt-4 text-center">
+                <button type="button" onclick="toggleAuth('signup')" class="text-xs text-slate-400 hover:text-white transition-colors">Register as New Commander</button>
+            </div>
+        </form>
+
+        <!-- Signup Form (Hidden by default) -->
+        <form id="signup-form" class="space-y-4 hidden">
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 ml-1">Email Register</label>
+                <input type="email" name="email" required placeholder="new.commander@tradeos.io" class="w-full bg-slate-900/50 border border-white/5 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
+            </div>
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1.5 ml-1">Access Key</label>
+                <input type="password" name="password" required placeholder="••••••••" class="w-full bg-slate-900/50 border border-white/5 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
+            </div>
+            <p id="signup-error" class="text-error text-xs hidden"></p>
+            <button type="submit" class="w-full py-4 bg-gradient-to-r from-tertiary to-primary text-slate-950 font-bold rounded-xl shadow-lg hover:shadow-tertiary/20 hover:brightness-110 transition-all uppercase tracking-widest text-xs">
+                Commission Account
+            </button>
+            <div class="pt-4 text-center">
+                <button type="button" onclick="toggleAuth('login')" class="text-xs text-slate-400 hover:text-white transition-colors">Return to Login Terminal</button>
+            </div>
+        </form>
+    </div>
+
+    <script type="module">
+        import { auth } from './js/firebase-config.js';
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const forms = {
+            login: document.getElementById('login-form'),
+            signup: document.getElementById('signup-form'),
+            subtitle: document.getElementById('auth-subtitle')
+        };
+
+        window.toggleAuth = (mode) => {
+            if (mode === 'signup') {
+                forms.login.classList.add('hidden');
+                forms.signup.classList.remove('hidden');
+                forms.subtitle.innerText = 'Register for the TradeOS Suite.';
+            } else {
+                forms.login.classList.remove('hidden');
+                forms.signup.classList.add('hidden');
+                forms.subtitle.innerText = 'Initialize your session.';
+            }
+        };
+
+        forms.login.onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const err = document.getElementById('login-error');
+            btn.disabled = true;
+            btn.innerText = 'LINKING...';
+            err.classList.add('hidden');
+
+            const fd = new FormData(forms.login);
+            try {
+                await signInWithEmailAndPassword(auth, fd.get('email'), fd.get('password'));
+                window.location.href = 'index.html';
+            } catch (error) {
+                err.innerText = error.message;
+                err.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerText = 'LINK SESSION';
+            }
+        };
+
+        forms.signup.onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const err = document.getElementById('signup-error');
+            btn.disabled = true;
+            btn.innerText = 'COMMISSIONING...';
+            err.classList.add('hidden');
+
+            const fd = new FormData(forms.signup);
+            try {
+                await createUserWithEmailAndPassword(auth, fd.get('email'), fd.get('password'));
+                window.location.href = 'index.html';
+            } catch (error) {
+                err.innerText = error.message;
+                err.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerText = 'COMMISSION ACCOUNT';
+            }
+        };
+
+        // Redirect if already logged in
+        auth.onAuthStateChanged(user => {
+            if (user) window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>TradeOS | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#85adff",
+                        "secondary": "#b486ff",
+                        "tertiary": "#26fedc",
+                        "error": "#ff6e84",
+                        "background": "var(--background)",
+                        "on-surface": "var(--on-surface)",
+                        "surface-container-high": "var(--surface-container-high)",
+                        "surface-container-low": "var(--surface-container-low)",
+                        "outline-variant": "var(--outline-variant)"
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        :root {
+            --background: #0b0e15;
+            --on-surface: #e7e7f1;
+            --surface-container-high: #1c1f28;
+            --surface-container-low: #10131b;
+            --outline-variant: #454850;
+        }
+        body { background-color: var(--background); color: var(--on-surface); font-family: 'Manrope', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .glass-panel { background: rgba(34, 38, 47, 0.4); backdrop-filter: blur(20px); }
+        .light .glass-panel { background: rgba(255, 255, 255, 0.7); border-color: rgba(0,0,0,0.05); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-slate-950/40 backdrop-blur-xl shadow-[0_20px_40px_rgba(133,173,255,0.08)]">
+        <div class="flex items-center gap-12">
+            <span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-['Space_Grotesk'] tracking-tight">TradeOS</span>
+            <div class="hidden md:flex items-center gap-8 font-['Space_Grotesk'] tracking-tight">
+                <a data-i18n="dashboard" class="text-cyan-200 transition-colors duration-300" href="index.html">Dashboard</a>
+                <a data-i18n="journal" class="text-slate-400 hover:text-cyan-200 transition-colors duration-300" href="journal.html">Journal</a>
+                <a data-i18n="insights" class="text-slate-400 hover:text-cyan-200 transition-colors duration-300" href="insights.html">Insights</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex flex-col items-end hidden md:flex cursor-pointer hover:opacity-80 transition-all" onclick="openProfileModal()">
+                <span id="user-display-name" class="text-sm font-bold text-on-surface">Admiral</span>
+                <span id="user-email" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest"></span>
+            </div>
+            <img id="user-avatar" onclick="openProfileModal()" alt="User Avatar" class="w-10 h-10 rounded-full border border-primary/20 bg-surface-container-low p-1 cursor-pointer hover:border-primary transition-all" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"/>
+            <button id="logout-btn" data-i18n="logout" class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all">Logout</button>
+        </div>
+    </nav>
+
+    <!-- SideNavBar -->
+    <aside class="fixed left-0 top-0 h-screen z-40 flex flex-col pt-24 bg-slate-950/60 backdrop-blur-2xl w-64 font-['Manrope'] font-medium text-sm">
+        <nav class="flex-1 flex flex-col gap-1 px-3">
+            <a class="flex items-center gap-3 px-4 py-3 text-cyan-300 bg-cyan-500/10 shadow-[0_0_15px_rgba(38,254,220,0.3)] rounded-r-full" href="index.html">
+                <span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 transition-all" href="trade-entry.html">
+                <span class="material-symbols-outlined">add_chart</span>
+                New Trade
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 transition-all font-medium text-sm" href="journal.html">
+                <span class="material-symbols-outlined">history_edu</span>
+                Journal
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 transition-all font-medium text-sm" href="calendar.html">
+                <span class="material-symbols-outlined">calendar_month</span>
+                Calendar
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 transition-all font-medium text-sm" href="habits.html">
+                <span class="material-symbols-outlined">auto_graph</span>
+                Habits
+            </a>
+            <a id="nav-upgrade" class="flex items-center gap-3 px-4 py-3 text-amber-300 hover:text-amber-100 transition-all font-bold text-sm mt-4 bg-amber-500/10 border-l-4 border-amber-400 group" href="pricing.html">
+                <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">rocket_launch</span>
+                <span data-i18n="upgrade_now">Upgrade Now</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="ml-64 pt-24 p-8 min-h-screen">
+        <div class="max-w-7xl mx-auto space-y-12">
+            <!-- Header Section -->
+            <section class="flex flex-col md:flex-row justify-between items-end gap-8">
+                <div>
+                    <h1 data-i18n="system_performance" class="text-6xl font-headline font-bold tracking-tighter text-on-surface">System Performance</h1>
+                    <p data-i18n="welcome_back" class="text-slate-400 mt-2">Welcome back, Commander. Here's your current market standing.</p>
+                </div>
+                <button data-i18n="new_trade" onclick="window.location.href='trade-entry.html'" class="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-on-primary-fixed rounded-md font-bold text-lg shadow-lg hover:brightness-110 transition-all">
+                    NEW TRADE
+                </button>
+            </section>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-12 gap-6">
+                <!-- Large Summary -->
+                <div class="col-span-12 lg:col-span-8 glass-panel p-10 rounded-2xl border border-outline-variant/10 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-8">
+                        <div id="status-badge" class="px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 bg-tertiary/10 text-tertiary shadow-[0_0_15px_rgba(38,254,220,0.2)]">
+                            <span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+                            <span data-i18n="operational">OPERATIONAL</span>
+                        </div>
+                    </div>
+                    <p data-i18n="total_profit" class="text-xs uppercase tracking-widest text-slate-500 mb-2">Total Profit / Loss</p>
+                    <h2 id="total-profit" class="text-6xl font-headline font-bold tracking-tight">$0.00</h2>
+                    
+                    <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white/5 px-4 py-3 rounded-xl border border-white/5">
+                            <p data-i18n="win_rate" class="text-[10px] text-slate-500 uppercase mb-1">Win Rate</p>
+                            <span id="win-rate" class="font-bold text-tertiary text-lg">0%</span>
+                        </div>
+                        <div class="bg-white/5 px-4 py-3 rounded-xl border border-white/5">
+                            <p data-i18n="daily_pl" class="text-[10px] text-slate-500 uppercase mb-1">Daily P/L</p>
+                            <span id="daily-pl" class="font-bold text-on-surface text-lg">$0.00</span>
+                        </div>
+                        <div class="bg-white/5 px-4 py-3 rounded-xl border border-white/5">
+                            <p data-i18n="avg_r" class="text-[10px] text-slate-500 uppercase mb-1">Avg R</p>
+                            <span id="avg-r" class="font-bold text-secondary text-lg">0.00</span>
+                        </div>
+                        <div class="bg-white/5 px-4 py-3 rounded-xl border border-white/5">
+                            <p data-i18n="target" class="text-[10px] text-slate-500 uppercase mb-1">Target</p>
+                            <span id="target-progress" class="font-bold text-primary text-lg">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prop Firm Sentinel -->
+                <div class="col-span-12 lg:col-span-4 space-y-6">
+                    <div class="glass-panel p-6 rounded-2xl border border-outline-variant/10 flex flex-col justify-between">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 data-i18n="prop_firm_sentinel" class="text-slate-400 font-headline uppercase tracking-widest text-xs font-bold">Prop Firm Sentinel</h3>
+                            <button onclick="document.getElementById('account-modal').classList.remove('hidden')" class="material-symbols-outlined text-slate-500 hover:text-white text-sm">settings</button>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-[10px] uppercase mb-1.5">
+                                    <span data-i18n="daily_buffer" class="text-slate-500 font-bold">Daily Buffer</span>
+                                    <span id="daily-buffer-val" class="text-tertiary font-bold">$5,000</span>
+                                </div>
+                                <div class="w-full bg-slate-900 rounded-full h-1 overflow-hidden">
+                                    <div id="daily-buffer-bar" class="bg-gradient-to-r from-tertiary to-primary h-full transition-all" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-[10px] uppercase mb-1.5">
+                                    <span data-i18n="max_drawdown_buffer" class="text-slate-500 font-bold">Max Drawdown Buffer</span>
+                                    <span id="max-buffer-val" class="text-secondary font-bold">$10,000</span>
+                                </div>
+                                <div class="w-full bg-slate-900 rounded-full h-1 overflow-hidden">
+                                    <div id="max-buffer-bar" class="bg-gradient-to-r from-secondary to-primary h-full transition-all" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-6 border-t border-white/5 flex gap-2">
+                            <button onclick="document.getElementById('importer-modal').classList.remove('hidden')" class="flex-1 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-sm">auto_fix</span> <span data-i18n="magic_import">Magic Import</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl border border-error/20 flex flex-col justify-between group cursor-pointer hover:bg-error/5 transition-all" onclick="toggleManualStatus()">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 data-i18n="manual_override" class="text-error font-headline uppercase tracking-widest text-xs font-bold mb-1">Manual Override</h3>
+                                <p data-i18n="force_restricted" class="text-[10px] text-slate-500 italic">Force restricted mode</p>
+                            </div>
+                            <div id="manual-toggle" class="w-8 h-4 bg-slate-800 rounded-full relative transition-all">
+                                <div class="absolute left-0 top-0 bottom-0 w-4 bg-slate-400 rounded-full border-2 border-slate-800 transition-all"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <!-- Account Settings Modal -->
+    <div id="account-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-panel p-8 rounded-2xl w-full max-w-md border border-white/10">
+            <h3 class="text-2xl font-headline font-bold mb-6">Prop Firm Settings</h3>
+            <form id="account-form" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase text-slate-500 mb-1">Balance ($)</label>
+                        <input type="number" name="balance" required class="w-full bg-surface-container-low border-none rounded-lg text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-slate-500 mb-1">Phase</label>
+                        <select name="phase" class="w-full bg-surface-container-low border-none rounded-lg text-white text-sm">
+                            <option>Evaluation</option>
+                            <option>Verification</option>
+                            <option>Funded</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase text-slate-500 mb-1">Daily (%)</label>
+                        <input type="number" name="dailyLimit" required class="w-full bg-surface-container-low border-none rounded-lg text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-slate-500 mb-1">Max (%)</label>
+                        <input type="number" name="maxDrawdown" required class="w-full bg-surface-container-low border-none rounded-lg text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-slate-500 mb-1">Target (%)</label>
+                        <input type="number" name="target" required class="w-full bg-surface-container-low border-none rounded-lg text-white text-sm">
+                    </div>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="document.getElementById('account-modal').classList.add('hidden')" class="flex-1 py-3 text-slate-400 font-bold hover:text-white">Cancel</button>
+                    <button type="submit" class="flex-1 py-3 bg-primary text-slate-950 font-bold rounded-lg hover:shadow-[0_0_15px_#85adff]">Save Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Magic Importer Modal -->
+    <div id="importer-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-panel p-8 rounded-2xl w-full max-w-md border border-white/10">
+            <h3 class="text-2xl font-headline font-bold mb-4">Magic Importer</h3>
+            <p class="text-xs text-slate-400 mb-6">Open your Prop Firm dashboard, paste the snippet in the console, and copy the output here.</p>
+            
+            <div class="bg-black/40 p-4 rounded-xl mb-6 relative group">
+                <code class="text-[10px] text-cyan-300 break-all leading-tight block" id="snippet-code">
+                    copy({balance: parseFloat(document.querySelector('.balance').innerText), trades: []})
+                </code>
+                <button onclick="copySnippet()" class="absolute top-2 right-2 p-2 bg-white/5 rounded-md hover:bg-white/10 text-[10px] uppercase font-bold text-slate-300">Copy</button>
+            </div>
+
+            <textarea id="import-data" placeholder="Paste JSON here..." class="w-full h-32 bg-surface-container-low border-none rounded-xl text-white text-[10px] font-mono p-4 mb-4"></textarea>
+
+            <div class="flex gap-4">
+                <button type="button" onclick="document.getElementById('importer-modal').classList.add('hidden')" class="flex-1 py-3 text-slate-400 font-bold">Cancel</button>
+                <button onclick="importData()" class="flex-1 py-3 bg-tertiary text-slate-950 font-bold rounded-lg hover:shadow-[0_0_15px_#26fedc]">Execute Import</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-panel p-8 rounded-2xl w-full max-w-md border border-white/10">
+            <h3 data-i18n="commander_profile" class="text-2xl font-headline font-bold mb-6">Commander Profile</h3>
+            <form id="profile-form" class="space-y-4">
+                <div>
+                    <label data-i18n="display_name" class="block text-xs uppercase text-slate-500 mb-1">Display Name</label>
+                    <input type="text" name="displayName" required class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                </div>
+                <div>
+                    <label data-i18n="avatar_url" class="block text-xs uppercase text-slate-500 mb-1">Avatar URL</label>
+                    <input type="text" name="avatar" required class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label data-i18n="language" class="block text-xs uppercase text-slate-500 mb-1">Language</label>
+                        <select name="language" class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label data-i18n="theme" class="block text-xs uppercase text-slate-500 mb-1">Theme</label>
+                        <select name="theme" class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                            <option value="dark">Dark</option>
+                            <option value="light">Light</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-4 bg-primary/10 rounded-xl border border-primary/20 flex justify-between items-center">
+                    <div>
+                        <p class="text-[10px] uppercase font-bold text-slate-500 mb-1">Current Sector</p>
+                        <p id="profile-plan-name" class="font-headline font-bold text-lg text-primary uppercase">NEBULA</p>
+                    </div>
+                    <button type="button" onclick="window.location.href='pricing.html'" class="px-4 py-2 bg-primary text-slate-950 text-[10px] font-bold rounded-lg uppercase tracking-widest">
+                        Change
+                    </button>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button data-i18n="cancel" type="button" onclick="document.getElementById('profile-modal').classList.add('hidden')" class="flex-1 py-3 text-slate-400 font-bold">Cancel</button>
+                    <button data-i18n="update_profile" type="submit" class="flex-1 py-3 bg-secondary text-on-primary font-bold rounded-lg hover:shadow-[0_0_15px_#b486ff]">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, signOut, onAuthStateChanged } from './js/firebase-config.js';
+        import { Storage } from './js/storage.js';
+        import { UIManager } from './js/ui-manager.js';
+        import { i18n } from './js/i18n.js';
+
+        let currentTrades = [];
+        let currentAccount = null;
+
+        // Auth Guard & Main Initialization
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'auth.html';
+            } else {
+                document.getElementById('user-email').textContent = user.email;
+                
+                // Load & Apply Global UI Preferences
+                const profile = await UIManager.init();
+                document.getElementById('user-display-name').textContent = profile.displayName;
+                document.getElementById('user-avatar').src = profile.avatar;
+                
+                // Subscription Logic
+                document.getElementById('profile-plan-name').textContent = profile.plan || 'nebula';
+                if (profile.plan !== 'nebula') {
+                    document.getElementById('nav-upgrade').classList.add('hidden');
+                }
+
+                // Subscribe to Real-time Updates
+                Storage.subscribeToTrades((trades) => {
+                    currentTrades = trades;
+                    updateDashboard();
+                    renderRecentTrades();
+                });
+
+                Storage.subscribeToAccount((account) => {
+                    currentAccount = account;
+                    updateDashboard();
+                    populateAccountForm();
+                });
+            }
+        });
+
+        document.getElementById('logout-btn').onclick = () => signOut(auth);
+
+        const updateDashboard = async () => {
+            if (!currentAccount || currentTrades.length === 0) {
+                // Fetch metrics even if trades local array is empty (could be first load)
+                const metrics = await Storage.getPropFirmMetrics();
+                const stats = await Storage.getStats();
+                renderMetrics(metrics, stats);
+                return;
+            }
+
+            // Calculate locally for instant feedback if possible, or fetch
+            const metrics = await Storage.getPropFirmMetrics();
+            const stats = await Storage.getStats();
+            renderMetrics(metrics, stats);
+        };
+
+        const renderMetrics = (metrics, stats) => {
+            // Stats Panel
+            document.getElementById('total-profit').textContent = (metrics.totalPL >= 0 ? '+' : '-') + `$${Math.abs(metrics.totalPL).toLocaleString()}`;
+            document.getElementById('total-profit').className = `text-6xl font-headline font-bold tracking-tight ${metrics.totalPL >= 0 ? 'text-tertiary' : 'text-error'}`;
+            document.getElementById('win-rate').textContent = `${stats.winRate}%`;
+            document.getElementById('daily-pl').textContent = (metrics.dailyPL >= 0 ? '+' : '-') + `$${Math.abs(metrics.dailyPL).toLocaleString()}`;
+            document.getElementById('avg-r').textContent = stats.avgR;
+            
+            const targetPct = metrics.targetUSD !== 0 ? Math.min(100, Math.max(0, (metrics.totalPL / metrics.targetUSD) * 100)) : 0;
+            document.getElementById('target-progress').textContent = `${Math.round(targetPct)}%`;
+
+            // Sentinel Meters
+            const dailyPct = Math.abs(metrics.dailyLimitUSD) !== 0 ? (metrics.dailyRemaining / Math.abs(metrics.dailyLimitUSD)) * 100 : 100;
+            document.getElementById('daily-buffer-val').textContent = `$${Math.round(metrics.dailyRemaining).toLocaleString()}`;
+            document.getElementById('daily-buffer-bar').style.width = `${dailyPct}%`;
+            document.getElementById('daily-buffer-bar').className = `h-full transition-all ${dailyPct < 20 ? 'bg-error' : dailyPct < 50 ? 'bg-secondary' : 'bg-tertiary'}`;
+
+            const totalPct = Math.abs(metrics.maxDrawdownUSD) !== 0 ? (metrics.totalRemaining / Math.abs(metrics.maxDrawdownUSD)) * 100 : 100;
+            document.getElementById('max-buffer-val').textContent = `$${Math.round(metrics.totalRemaining).toLocaleString()}`;
+            document.getElementById('max-buffer-bar').style.width = `${totalPct}%`;
+            document.getElementById('max-buffer-bar').className = `h-full transition-all ${totalPct < 20 ? 'bg-error' : 'bg-secondary'}`;
+
+            // Status Badge
+            const statusBadge = document.getElementById('status-badge');
+            const statusLabel = i18n.t(metrics.status); // Translate based on status key if exists
+            const statusText = metrics.status === 'bad' ? i18n.t('restricted') : i18n.t('operational');
+            statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${metrics.status === 'bad' ? 'bg-error animate-ping' : metrics.status === 'neutral' ? 'bg-secondary' : 'bg-tertiary animate-pulse'}"></span>${statusText}`;
+            statusBadge.className = `px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 ${metrics.status === 'bad' ? 'bg-error/10 text-error' : metrics.status === 'neutral' ? 'bg-secondary/10 text-secondary' : 'bg-tertiary/10 text-tertiary'}`;
+
+            // Manual Toggle UI
+            if (currentAccount) {
+                const manualToggle = document.getElementById('manual-toggle');
+                manualToggle.querySelector('div').className = `absolute top-0 bottom-0 w-4 bg-white rounded-full border-2 border-slate-800 transition-all ${currentAccount.manualStatus ? 'right-0' : 'left-0'}`;
+                manualToggle.parentElement.parentElement.className = `glass-panel p-6 rounded-2xl border ${currentAccount.manualStatus ? 'border-error shadow-[0_0_15px_rgba(255,110,132,0.2)] bg-error/5' : 'border-outline-variant/10'} flex flex-col justify-between group cursor-pointer hover:bg-error/5 transition-all`;
+            }
+        };
+
+        const renderRecentTrades = () => {
+            const trades = [...currentTrades].reverse().slice(0, 3);
+            document.getElementById('recent-trades').innerHTML = trades.length === 0 
+                ? '<tr><td colspan="5" class="py-8 text-center text-slate-500">No recent trades. Start journaling!</td></tr>'
+                : trades.map(t => {
+                    const res = parseFloat(t.result) || 0;
+                    return `
+                        <tr class="hover:bg-white/5 transition-all cursor-pointer border-t border-outline-variant/5">
+                            <td class="py-5 font-bold">${t.asset}</td>
+                            <td class="py-5">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] ${t.type === 'BUY' ? 'bg-tertiary/10 text-tertiary' : 'bg-error/10 text-error'}">
+                                    ${t.type}
+                                </span>
+                            </td>
+                            <td class="py-5 font-mono text-slate-400">$${parseFloat(t.entryPrice).toFixed(2)}</td>
+                            <td class="py-5 font-mono text-slate-400">${t.rRatio}</td>
+                            <td class="py-5 text-right font-bold ${res >= 0 ? 'text-tertiary' : 'text-error'}">
+                                ${res >= 0 ? '+$' : '-$'}${Math.abs(res).toFixed(2)}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+        };
+
+        const populateAccountForm = () => {
+            if (!currentAccount) return;
+            const accountForm = document.getElementById('account-form');
+            Object.keys(currentAccount).forEach(key => {
+                if (accountForm.elements[key]) accountForm.elements[key].value = currentAccount[key];
+            });
+        };
+
+        // Prop Firm Handlers
+        window.toggleManualStatus = async () => {
+            if (!currentAccount) return;
+            currentAccount.manualStatus = currentAccount.manualStatus ? null : 'bad';
+            await Storage.saveAccount(currentAccount);
+            // updateDashboard will be triggered by subscription
+        };
+
+        const accountForm = document.getElementById('account-form');
+        accountForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const fd = new FormData(accountForm);
+            await Storage.saveAccount({
+                balance: parseFloat(fd.get('balance')),
+                dailyLimit: parseFloat(fd.get('dailyLimit')),
+                maxDrawdown: parseFloat(fd.get('maxDrawdown')),
+                target: parseFloat(fd.get('target')),
+                phase: fd.get('phase'),
+                manualStatus: currentAccount ? currentAccount.manualStatus : null
+            });
+            document.getElementById('account-modal').classList.add('hidden');
+        };
+
+        // Snippet Logic
+        window.copySnippet = () => {
+            const code = `
+                (function(){
+                    const metrics = {
+                        balance: parseFloat(document.body.innerText.match(/balance.*?([\\d,.]+)/i)?.[1].replace(/,/g,'')) || 100000,
+                        trades: Array.from(document.querySelectorAll('tr')).slice(1,10).map(r => ({
+                            asset: r.cells[0]?.innerText || 'USDJPY',
+                            result: parseFloat(r.cells[r.cells.length-1]?.innerText.replace(/[^\\d.-]/g,'')) || 0
+                        }))
+                    };
+                    console.log("CLONE DATA BELOW:");
+                    console.log(JSON.stringify(metrics));
+                    alert("Data serialized to console. Copy the JSON object.");
+                })()
+            `;
+            navigator.clipboard.writeText(code);
+            alert("Magic Snippet copied. Execute it in your Prop Firm dashboard's Console.");
+        };
+
+        window.importData = async () => {
+            const raw = document.getElementById('import-data').value;
+            try {
+                const data = JSON.parse(raw);
+                const acc = await Storage.getAccount();
+                acc.balance = data.balance || acc.balance;
+                await Storage.saveAccount(acc);
+                
+                if (data.trades) {
+                    for (const t of data.trades) {
+                        await Storage.saveTrade({
+                            asset: t.asset,
+                            type: 'BUY',
+                            entryPrice: 0,
+                            sl: 0,
+                            tp: 0,
+                            result: t.result,
+                            rRatio: 1
+                        }).catch(e => console.warn("Safety Lock skipped trade import."));
+                    }
+                }
+                
+                document.getElementById('importer-modal').classList.add('hidden');
+                alert("Import successful. System recalibrated.");
+            } catch(e) {
+                alert("Invalid JSON data.");
+            }
+        };
+
+        // Profile Logic
+        window.openProfileModal = async () => {
+            const profile = await Storage.getProfile();
+            const form = document.getElementById('profile-form');
+            form.elements.displayName.value = profile.displayName;
+            form.elements.avatar.value = profile.avatar;
+            form.elements.language.value = profile.language || 'en';
+            form.elements.theme.value = profile.theme || 'dark';
+            document.getElementById('profile-modal').classList.remove('hidden');
+        };
+
+        const profileForm = document.getElementById('profile-form');
+        profileForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const fd = new FormData(profileForm);
+            const newProfile = {
+                displayName: fd.get('displayName'),
+                avatar: fd.get('avatar'),
+                language: fd.get('language'),
+                theme: fd.get('theme')
+            };
+            
+            // Apply changes immediately
+            UIManager.setTheme(newProfile.theme);
+            UIManager.setLanguage(newProfile.language);
+            
+            await Storage.saveProfile(newProfile);
+            
+            document.getElementById('user-display-name').textContent = newProfile.displayName;
+            document.getElementById('user-avatar').src = newProfile.avatar;
+            document.getElementById('profile-modal').classList.add('hidden');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>TradeOS | Intelligent Calendar</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#85adff",
+                        "secondary": "#b486ff",
+                        "tertiary": "#26fedc",
+                        "error": "#ff6e84",
+                        "background": "var(--background)",
+                        "on-surface": "var(--on-surface)",
+                        "surface-container-high": "var(--surface-container-high)",
+                        "surface-container-low": "var(--surface-container-low)",
+                        "outline-variant": "var(--outline-variant)",
+                        "on-surface-variant": "#a9abb4"
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        :root {
+            --background: #0b0e15;
+            --on-surface: #e7e7f1;
+            --surface-container-high: #1c1f28;
+            --surface-container-low: #10131b;
+            --outline-variant: #454850;
+        }
+        body { background-color: var(--background); color: var(--on-surface); font-family: 'Manrope', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .glass-panel { background: rgba(34, 38, 47, 0.4); backdrop-filter: blur(20px); }
+        .light .glass-panel { background: rgba(255, 255, 255, 0.7); border-color: rgba(0,0,0,0.05); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+    <!-- Top Nav -->
+    <header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-slate-950/40 backdrop-blur-xl shadow-[0_20px_40px_rgba(133,173,255,0.08)]">
+        <div class="flex items-center gap-8">
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-['Space_Grotesk'] tracking-tight">TradeOS</h1>
+            <nav class="hidden md:flex items-center gap-6 font-['Space_Grotesk'] tracking-tight">
+                <a data-i18n="dashboard" class="text-slate-400 hover:text-cyan-200" href="index.html">Dashboard</a>
+                <a data-i18n="journal" class="text-slate-400 hover:text-cyan-200" href="journal.html">Journal</a>
+                <a data-i18n="calendar" class="text-cyan-300 border-b-2 border-cyan-300 pb-1" href="calendar.html">Calendar</a>
+                <a data-i18n="insights" class="text-slate-400 hover:text-cyan-200" href="insights.html">Insights</a>
+            </nav>
+        </div>
+        <div class="flex items-center gap-4">
+            <div id="nav-profile" class="flex flex-col items-end hidden md:flex cursor-pointer hover:opacity-80 transition-all" onclick="openProfileModal()">
+                <span id="user-display-name" class="text-sm font-bold text-on-surface">Admiral</span>
+                <span id="user-email" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest"></span>
+            </div>
+            <img id="user-avatar" onclick="openProfileModal()" alt="User Avatar" class="w-10 h-10 rounded-full border border-primary/20 bg-surface-container-low p-1 cursor-pointer hover:border-primary transition-all" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"/>
+            <button id="logout-btn" data-i18n="logout" class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all">Logout</button>
+        </div>
+    </header>
+
+    <!-- Side Nav -->
+    <aside class="fixed left-0 top-0 h-screen z-40 flex flex-col pt-24 bg-slate-950/60 backdrop-blur-2xl w-64">
+        <nav class="flex-1 space-y-1 font-['Manrope'] font-medium text-sm mt-8 px-4">
+            <a class="flex items-center gap-3 px-6 py-3 text-slate-500 hover:text-slate-200" href="index.html">
+                <span class="material-symbols-outlined">dashboard</span> <span data-i18n="dashboard">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-6 py-3 text-slate-500 hover:text-slate-200" href="trade-entry.html">
+                <span class="material-symbols-outlined">add_chart</span> <span data-i18n="new_trade">Trades</span>
+            </a>
+            <a class="flex items-center gap-3 px-6 py-3 text-cyan-300 bg-cyan-500/10 shadow-[0_0_15px_rgba(38,254,220,0.3)] rounded-r-full border-r-4 border-cyan-300" href="calendar.html">
+                <span class="material-symbols-outlined">calendar_month</span> <span data-i18n="calendar">Calendar</span>
+            </a>
+            <a class="flex items-center gap-3 px-6 py-3 text-slate-500 hover:text-slate-200" href="habits.html">
+                <span class="material-symbols-outlined">auto_graph</span> <span data-i18n="habits">Habits</span>
+            </a>
+            <a class="flex items-center gap-3 px-6 py-3 text-slate-500 hover:text-slate-200" href="journal.html">
+                <span class="material-symbols-outlined">history_edu</span> <span data-i18n="journal">Journal</span>
+            </a>
+        </nav>
+        <div class="p-6 mt-auto">
+            <button data-i18n="new_event" onclick="document.getElementById('event-modal').classList.remove('hidden')" class="w-full py-3 bg-gradient-to-r from-primary to-secondary text-slate-950 font-bold rounded-lg shadow-lg active:scale-95 transition-transform">
+                New Event
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 pt-24 px-8 pb-12">
+        <div class="mb-12 flex justify-between items-end">
+            <div>
+                <h2 data-i18n="critical_events" class="text-5xl font-headline font-bold text-on-surface mb-2 tracking-tighter">Critical Events</h2>
+                <p data-i18n="macro_signals" class="text-on-surface-variant max-w-xl text-lg">Real-time macro signals synchronized with your trading schedule.</p>
+            </div>
+            <div class="flex gap-4">
+                <div class="glass-panel p-1 rounded-lg flex" id="impact-filters">
+                    <button data-i18n="high" class="px-4 py-2 bg-error/20 text-error rounded-md text-sm font-bold active-glow" data-impact="high">High</button>
+                    <button data-i18n="med" class="px-4 py-2 text-slate-400 text-sm hover:text-on-surface" data-impact="medium">Med</button>
+                    <button data-i18n="low" class="px-4 py-2 text-slate-400 text-sm hover:text-on-surface" data-impact="low">Low</button>
+                    <button data-i18n="all" class="px-4 py-2 text-slate-400 text-sm hover:text-on-surface" data-impact="all">All</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-8">
+            <!-- Left Column: Navigation & AI Summary -->
+            <div class="col-span-12 lg:col-span-4 space-y-8">
+                <!-- Monthly Calendar Grid -->
+                <section class="glass-panel rounded-2xl p-6 ghost-border">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-headline font-bold text-lg" id="grid-month-display">October 2023</h3>
+                        <div class="flex gap-2">
+                            <button data-i18n="today" id="grid-today" class="px-2 py-0.5 text-[10px] font-bold text-tertiary bg-tertiary/10 rounded-md hover:bg-tertiary/20 transition-all uppercase tracking-tighter">Today</button>
+                            <button id="grid-prev" class="material-symbols-outlined text-sm text-slate-400 hover:text-white">chevron_left</button>
+                            <button id="grid-next" class="material-symbols-outlined text-sm text-slate-400 hover:text-white">chevron_right</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-7 text-center mb-2 px-1">
+                        <div class="text-[10px] uppercase font-bold text-slate-500 font-headline">M</div>
+                        <div class="text-[10px] uppercase font-bold text-slate-500 font-headline">T</div>
+                        <div class="text-[10px] uppercase font-bold text-slate-500 font-headline">W</div>
+                        <div class="text-[10px] uppercase font-bold text-slate-500 font-headline">T</div>
+                        <div class="text-[10px] uppercase font-bold text-slate-500 font-headline">F</div>
+                        <div class="text-[10px] uppercase font-bold text-error/60 font-headline">S</div>
+                        <div class="text-[10px] uppercase font-bold text-error/60 font-headline">S</div>
+                    </div>
+                    <div class="grid grid-cols-7 border-t border-l border-white/5" id="month-grid">
+                        <!-- Days populated by JS -->
+                    </div>
+                </section>
+
+                <section class="glass-panel rounded-2xl p-6 border-l-4 border-secondary/50">
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
+                            <span class="material-symbols-outlined">psychology</span>
+                        </div>
+                        <div>
+                            <h3 data-i18n="nebula_intelligence" class="font-headline font-bold text-xl text-tertiary">Nebula Intelligence</h3>
+                            <p data-i18n="market_sentiment" class="text-xs text-slate-400 uppercase tracking-widest">Market Sentiment Engine</p>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-surface-container-highest/50 rounded-xl mb-4">
+                        <p class="text-on-surface text-sm leading-relaxed" id="nebula-text">
+                            Waiting for data scan...
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Central Bank Speeches -->
+                <section class="glass-panel rounded-2xl p-6 ghost-border">
+                    <h3 data-i18n="central_bank" class="font-headline font-bold text-lg mb-6">Central Bank Pulse</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold">FED</div>
+                                <span class="text-sm font-bold">Powell Outlook</span>
+                            </div>
+                            <span class="text-xs text-slate-400">Stable</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Calendar Feed -->
+            <div class="col-span-12 lg:col-span-8">
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <div class="flex items-center justify-between p-6 border-b border-white/5">
+                        <div class="flex items-center gap-6">
+                            <button id="prev-day" class="material-symbols-outlined text-slate-400 hover:text-on-surface">chevron_left</button>
+                            <h3 class="text-xl font-headline font-bold" id="current-date-display">October 24, 2023</h3>
+                            <button id="next-day" class="material-symbols-outlined text-slate-400 hover:text-on-surface">chevron_right</button>
+                        </div>
+                    </div>
+
+                    <div class="p-6 space-y-4 shadow-inner" id="event-feed">
+                        <!-- Events populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Event Modal -->
+    <div id="event-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-panel p-8 rounded-2xl w-full max-w-md border border-white/10">
+            <h3 data-i18n="add_personal" class="text-2xl font-headline font-bold mb-6">Add Personal Session</h3>
+            <form id="event-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs uppercase text-slate-500 mb-1">Title</label>
+                    <input type="text" name="title" required class="w-full bg-surface-container-low border-none rounded-lg text-white">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase text-slate-500 mb-1">Time (24h)</label>
+                        <input type="text" name="time" placeholder="14:00" required class="w-full bg-surface-container-low border-none rounded-lg text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-slate-500 mb-1">Impact</label>
+                        <select name="impact" class="w-full bg-surface-container-low border-none rounded-lg text-white">
+                            <option value="low">Low Impact</option>
+                            <option value="medium">Medium Impact</option>
+                            <option value="high">High Impact</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button data-i18n="cancel" type="button" onclick="document.getElementById('event-modal').classList.add('hidden')" class="flex-1 py-3 text-slate-400 font-bold hover:text-white">Cancel</button>
+                    <button data-i18n="save_event" type="submit" class="flex-1 py-3 bg-primary text-slate-950 font-bold rounded-lg hover:shadow-[0_0_15px_#85adff]">Save Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Modal (Injected for sync) -->
+    <div id="profile-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-panel p-8 rounded-2xl w-full max-w-md border border-white/10">
+            <h3 data-i18n="commander_profile" class="text-2xl font-headline font-bold mb-6">Commander Profile</h3>
+            <form id="profile-form" class="space-y-4">
+                <div>
+                    <label data-i18n="display_name" class="block text-xs uppercase text-slate-500 mb-1">Display Name</label>
+                    <input type="text" name="displayName" required class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                </div>
+                <div>
+                    <label data-i18n="avatar_url" class="block text-xs uppercase text-slate-500 mb-1">Avatar URL</label>
+                    <input type="text" name="avatar" required class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label data-i18n="language" class="block text-xs uppercase text-slate-500 mb-1">Language</label>
+                        <select name="language" class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label data-i18n="theme" class="block text-xs uppercase text-slate-500 mb-1">Theme</label>
+                        <select name="theme" class="w-full bg-surface-container-low border-none rounded-lg text-on-surface text-sm">
+                            <option value="dark">Dark</option>
+                            <option value="light">Light</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-4 bg-primary/10 rounded-xl border border-primary/20 flex justify-between items-center mb-4">
+                    <div>
+                        <p class="text-[10px] uppercase font-bold text-slate-500 mb-1">Current Sector</p>
+                        <p id="profile-plan-name" class="font-headline font-bold text-lg text-primary uppercase">NEBULA</p>
+                    </div>
+                    <button type="button" onclick="window.location.href='pricing.html'" class="px-4 py-2 bg-primary text-slate-950 text-[10px] font-bold rounded-lg uppercase tracking-widest">
+                        Change
+                    </button>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button data-i18n="cancel" type="button" onclick="document.getElementById('profile-modal').classList.add('hidden')" class="flex-1 py-3 text-slate-400 font-bold">Cancel</button>
+                    <button data-i18n="update_profile" type="submit" class="flex-1 py-3 bg-secondary text-on-primary font-bold rounded-lg hover:shadow-[0_0_15px_#b486ff]">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, signOut, onAuthStateChanged } from './js/firebase-config.js';
+        import { Storage } from './js/storage.js';
+        import { UIManager } from './js/ui-manager.js';
+        import { i18n } from './js/i18n.js';
+
+        let currentDate = new Date();
+        let viewDate = new Date(currentDate);
+        let selectedImpact = 'all';
+
+        // Auth Guard
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'auth.html';
+            } else {
+                document.getElementById('user-email').textContent = user.email;
+                
+                const profile = await UIManager.init();
+                document.getElementById('user-display-name').textContent = profile.displayName;
+                document.getElementById('user-avatar').src = profile.avatar;
+                document.getElementById('profile-plan-name').textContent = profile.plan || 'nebula';
+                
+                renderEvents();
+                renderGrid();
+            }
+        });
+
+        document.getElementById('logout-btn').onclick = () => signOut(auth);
+
+        const feed = document.getElementById('event-feed');
+        const dateDisplay = document.getElementById('current-date-display');
+        const nebulaText = document.getElementById('nebula-text');
+        const grid = document.getElementById('month-grid');
+        const gridMonthDisplay = document.getElementById('grid-month-display');
+
+        const formatDate = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        const renderGrid = async () => {
+            const year = viewDate.getFullYear();
+            const month = viewDate.getMonth();
+            gridMonthDisplay.textContent = viewDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const adjFirstDay = (firstDayIndex === 0) ? 6 : firstDayIndex - 1; // Mon=0, Sun=6
+
+            grid.innerHTML = '';
+
+            // Leading days
+            for (let i = 0; i < adjFirstDay; i++) {
+                grid.innerHTML += '<div class="h-10 border-b border-r border-white/5 opacity-10"></div>';
+            }
+
+            // Month days
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dayDate = new Date(year, month, d);
+                const dateStr = formatDate(dayDate);
+                const events = await Storage.getCalendarEvents(dateStr);
+                const isSelected = dateStr === formatDate(currentDate);
+                const isToday = dateStr === formatDate(new Date());
+
+                let indicator = '';
+                if (events.length > 0) {
+                    const hasHigh = events.some(e => e.impact === 'high');
+                    const hasPersonal = events.some(e => e.type === 'personal');
+                    indicator = `<span class="absolute bottom-1 w-1 h-1 rounded-full ${hasHigh ? 'bg-error' : hasPersonal ? 'bg-tertiary' : 'bg-primary'}"></span>`;
+                }
+
+                const dayEl = document.createElement('div');
+                dayEl.className = `h-10 border-b border-r border-white/5 relative flex items-center justify-center cursor-pointer hover:bg-white/5 transition-all 
+                                  ${isSelected ? 'bg-primary/20 active-glow' : ''} ${isToday ? 'text-primary font-bold' : ''}`;
+                dayEl.innerHTML = `<span class="text-[10px] ${isSelected ? 'text-white' : 'text-slate-400'}">${d}</span>${indicator}`;
+                dayEl.onclick = () => selectDay(dateStr);
+                grid.appendChild(dayEl);
+            }
+        };
+
+        window.selectDay = async (dateStr) => {
+            currentDate = new Date(dateStr + "T00:00:00"); // Avoid timezone shifts
+            await renderEvents();
+            await renderGrid();
+        };
+
+        const renderEvents = async () => {
+            const dateStr = formatDate(currentDate);
+            dateDisplay.textContent = currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            
+            const events = await Storage.getCalendarEvents(dateStr);
+            const filtered = selectedImpact === 'all' ? events : events.filter(e => e.impact === selectedImpact);
+            
+            nebulaText.textContent = Storage.getNebulaSentiment(events);
+
+            if (filtered.length === 0) {
+                feed.innerHTML = '<div class="p-12 text-center opacity-30 italic">No events detected in this cosmic alignment.</div>';
+                return;
+            }
+
+            feed.innerHTML = filtered.map(e => `
+                <div class="relative flex items-center gap-6 p-6 transition-all rounded-2xl group overflow-hidden border border-white/5 
+                ${e.impact === 'high' ? 'bg-error/5 hover:bg-error/10 border-error/10' : e.impact === 'medium' ? 'bg-secondary/5 hover:bg-secondary/10' : 'bg-surface-container-low/30'}">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 ${e.impact === 'high' ? 'bg-error' : e.impact === 'medium' ? 'bg-secondary' : 'bg-tertiary'}"></div>
+                    <div class="w-20 flex-shrink-0 text-center">
+                        <p class="text-lg font-bold ${e.impact === 'high' ? 'text-error' : 'text-on-surface'}">${e.time}</p>
+                        <p class="text-[10px] text-slate-500 uppercase tracking-widest font-headline">EST</p>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-1">
+                            <span class="text-xs font-bold text-on-surface bg-white/10 px-2 py-0.5 rounded">${e.asset || 'SYS'}</span>
+                            <span class="text-[10px] uppercase font-bold tracking-tighter flex items-center gap-1 ${e.impact === 'high' ? 'text-error' : e.impact === 'medium' ? 'text-secondary' : 'text-tertiary'}">
+                                ${e.impact === 'high' ? '<span class="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>' : ''} ${e.impact} Impact
+                            </span>
+                        </div>
+                        <h4 class="text-lg font-bold">${e.title}</h4>
+                        ${e.forecast ? `<div class="flex gap-4 mt-2"><div class="text-[10px] text-slate-400 uppercase">Forecast: <span class="text-on-surface font-medium">${e.forecast}</span></div></div>` : ''}
+                        ${e.type === 'personal' ? `<p class="text-[10px] text-tertiary mt-1 italic">Personal Session</p>` : ''}
+                    </div>
+                    <div class="text-right">
+                        <span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">${e.type === 'macro' ? 'star' : 'person'}</span>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        // Navigation
+        document.getElementById('prev-day').onclick = async () => { currentDate.setDate(currentDate.getDate() - 1); viewDate = new Date(currentDate); await renderEvents(); await renderGrid(); };
+        document.getElementById('next-day').onclick = async () => { currentDate.setDate(currentDate.getDate() + 1); viewDate = new Date(currentDate); await renderEvents(); await renderGrid(); };
+        
+        document.getElementById('grid-today').onclick = async () => { currentDate = new Date(); viewDate = new Date(currentDate); await renderEvents(); await renderGrid(); };
+        document.getElementById('grid-prev').onclick = async () => { viewDate.setMonth(viewDate.getMonth() - 1); await renderGrid(); };
+        document.getElementById('grid-next').onclick = async () => { viewDate.setMonth(viewDate.getMonth() + 1); await renderGrid(); };
+
+        // Filters
+        document.querySelectorAll('#impact-filters button').forEach(btn => {
+            btn.onclick = async () => {
+                document.querySelectorAll('#impact-filters button').forEach(b => b.classList.remove('bg-error/20', 'text-error', 'bg-primary/20', 'text-primary', 'active-glow'));
+                btn.classList.add('active-glow', btn.dataset.impact === 'high' ? 'bg-error/20' : 'bg-primary/20');
+                btn.classList.add(btn.dataset.impact === 'high' ? 'text-error' : 'text-primary');
+                selectedImpact = btn.dataset.impact;
+                await renderEvents();
+            };
+        });
+
+        // Form
+        document.getElementById('event-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            await Storage.saveEvent({
+                date: formatDate(currentDate),
+                title: fd.get('title'),
+                time: fd.get('time'),
+                impact: fd.get('impact')
+            });
+            e.target.reset();
+            document.getElementById('event-modal').classList.add('hidden');
+            await renderEvents();
+            await renderGrid();
+        };
+
+        // Profile Logic
+        window.openProfileModal = async () => {
+            const profile = await Storage.getProfile();
+            const form = document.getElementById('profile-form');
+            form.elements.displayName.value = profile.displayName;
+            form.elements.avatar.value = profile.avatar;
+            form.elements.language.value = profile.language || 'en';
+            form.elements.theme.value = profile.theme || 'dark';
+            document.getElementById('profile-modal').classList.remove('hidden');
+        };
+
+        const profileForm = document.getElementById('profile-form');
+        profileForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const fd = new FormData(profileForm);
+            const newProfile = {
+                displayName: fd.get('displayName'),
+                avatar: fd.get('avatar'),
+                language: fd.get('language'),
+                theme: fd.get('theme')
+            };
+            
+            UIManager.setTheme(newProfile.theme);
+            UIManager.setLanguage(newProfile.language);
+            await Storage.saveProfile(newProfile);
+            
+            document.getElementById('user-display-name').textContent = newProfile.displayName;
+            document.getElementById('user-avatar').src = newProfile.avatar;
+            document.getElementById('profile-modal').classList.add('hidden');
+        };
+    </script>
+</body>
+</html>

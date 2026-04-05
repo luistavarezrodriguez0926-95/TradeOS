@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeOS | Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#000000",
+                        "secondary-container": "#6801d1",
+                        "on-tertiary-container": "#005d4f",
+                        "on-secondary-fixed-variant": "#6b0cd4",
+                        "surface-tint": "#85adff",
+                        "primary-fixed": "#6d9fff",
+                        "error": "#ff6e84",
+                        "error-dim": "#d73357",
+                        "secondary": "#b486ff",
+                        "secondary-dim": "#9149fa",
+                        "tertiary-dim": "#00e8c9",
+                        "tertiary": "#b6ffed",
+                        "on-secondary-fixed": "#470093",
+                        "secondary-fixed": "#dec8ff",
+                        "on-secondary-container": "#e6d4ff",
+                        "on-surface": "#e7e7f1",
+                        "surface-container-highest": "#22262f",
+                        "tertiary-fixed-dim": "#00efce",
+                        "outline": "#73757e",
+                        "secondary-fixed-dim": "#d3b7ff",
+                        "on-primary-container": "#00214f",
+                        "on-tertiary": "#006657",
+                        "on-secondary": "#2d0062",
+                        "on-error": "#490013",
+                        "surface-container-low": "#10131b",
+                        "outline-variant": "#454850",
+                        "primary-fixed-dim": "#5291ff",
+                        "background": "#0b0e15",
+                        "tertiary-container": "#26fedc",
+                        "primary-container": "#6d9fff",
+                        "on-primary": "#002c66",
+                        "primary": "#85adff",
+                        "primary-dim": "#1470e8",
+                        "error-container": "#a70138",
+                        "on-background": "#e7e7f1",
+                        "on-tertiary-fixed": "#00483d",
+                        "on-primary-fixed-variant": "#002a61",
+                        "surface-variant": "#22262f",
+                        "on-surface-variant": "#a9abb4",
+                        "on-primary-fixed": "#000000",
+                        "tertiary-fixed": "#26fedc",
+                        "on-error-container": "#ffb2b9",
+                        "surface-bright": "#282c36",
+                        "inverse-primary": "#005bc3",
+                        "surface": "#0b0e15",
+                        "inverse-on-surface": "#53555d",
+                        "on-tertiary-fixed-variant": "#006859",
+                        "inverse-surface": "#faf9ff",
+                        "surface-dim": "#0b0e15",
+                        "surface-container": "#161922",
+                        "surface-container-high": "#1c1f28"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(34, 38, 47, 0.4);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(133, 173, 255, 0.1);
+        }
+        .nebula-gradient {
+            background: radial-gradient(circle at 20% 30%, rgba(109, 159, 255, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(104, 1, 209, 0.15) 0%, transparent 50%);
+        }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(38, 254, 220, 0.1), transparent);
+            background-size: 200% 100%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-tertiary/30 selection:text-tertiary">
+<!-- Shell Suppression: This is a focused login journey. Navigation shells are suppressed to prioritize the Canvas. -->
+<!-- Atmospheric Background Layer -->
+<div class="fixed inset-0 z-0 overflow-hidden pointer-events-none nebula-gradient">
+<div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-secondary/10 blur-[150px] rounded-full"></div>
+<!-- Static "Particle" representations as small stars -->
+<div class="absolute top-10 left-1/2 w-1 h-1 bg-tertiary rounded-full opacity-40 shadow-[0_0_10px_#b6ffed]"></div>
+<div class="absolute top-40 right-20 w-1.5 h-1.5 bg-primary rounded-full opacity-30 shadow-[0_0_12px_#85adff]"></div>
+<div class="absolute bottom-40 left-10 w-1 h-1 bg-secondary rounded-full opacity-50 shadow-[0_0_8px_#b486ff]"></div>
+<div class="absolute top-1/2 right-1/3 w-0.5 h-0.5 bg-on-surface rounded-full opacity-20"></div>
+</div>
+<main class="relative z-10 flex min-h-screen items-center justify-center p-6 lg:p-12">
+<div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<!-- Left Side: Editorial Branding -->
+<div class="hidden lg:flex flex-col space-y-8 pr-12">
+<div class="space-y-4">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-label text-sm tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_#85adff]"></span>
+                        System Online
+                    </span>
+<h1 class="font-headline text-7xl font-bold tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-br from-on-surface via-primary to-secondary">TradeOS</h1>
+</div>
+<p class="text-xl text-on-surface-variant font-light leading-relaxed max-w-md">
+                    Navigate the digital cosmos with high-fidelity precision. Your interstellar financial terminal awaits authorization.
+                </p>
+<div class="grid grid-cols-2 gap-8 pt-8">
+<div class="space-y-2">
+<span class="text-tertiary font-headline text-3xl font-bold">2.4ms</span>
+<p class="text-xs text-on-surface-variant font-label tracking-widest uppercase">Execution Latency</p>
+</div>
+<div class="space-y-2">
+<span class="text-primary font-headline text-3xl font-bold">99.9%</span>
+<p class="text-xs text-on-surface-variant font-label tracking-widest uppercase">Uptime Stability</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Login Card (Glassmorphism) -->
+<div class="flex justify-center lg:justify-end">
+<div class="glass-card w-full max-w-md p-8 lg:p-10 rounded-2xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] relative overflow-hidden group">
+<!-- Subtle Glow Effect on Card Top -->
+<div class="absolute -top-24 -left-24 w-48 h-48 bg-primary/10 blur-[60px] rounded-full group-hover:bg-primary/20 transition-all duration-700"></div>
+<div class="relative z-10 space-y-8">
+<div class="space-y-2">
+<h2 class="font-headline text-3xl font-semibold tracking-tight text-on-surface">Initialize Session</h2>
+<p class="text-on-surface-variant text-sm">Enter your credentials to breach the singularity.</p>
+</div>
+<!-- Login Form -->
+<form action="#" class="space-y-6" method="POST">
+<div class="space-y-4">
+<div class="space-y-2">
+<label class="block text-xs font-label uppercase tracking-widest text-on-surface-variant ml-1" for="email">Universal Identifier</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg py-4 pl-4 pr-12 text-on-surface placeholder:text-outline-variant focus:ring-1 focus:ring-primary/50 transition-all" id="email" name="email" placeholder="name@nebula.com" required="" type="email"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline-variant">alternate_email</span>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<label class="block text-xs font-label uppercase tracking-widest text-on-surface-variant" for="password">Security Key</label>
+<a class="text-[10px] uppercase font-label text-primary hover:text-tertiary transition-colors tracking-widest" href="#">Lost Key?</a>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg py-4 pl-4 pr-12 text-on-surface placeholder:text-outline-variant focus:ring-1 focus:ring-primary/50 transition-all" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline-variant">lock</span>
+</div>
+</div>
+</div>
+<button class="w-full py-4 rounded-lg font-headline font-bold text-on-primary bg-gradient-to-r from-primary to-secondary shadow-[0_0_20px_rgba(133,173,255,0.2)] hover:shadow-[0_0_30px_rgba(133,173,255,0.4)] transition-all duration-300 transform active:scale-[0.98]" type="submit">
+                                AUTHENTICATE
+                            </button>
+</form>
+<!-- Divider -->
+<div class="relative flex items-center py-2">
+<div class="flex-grow border-t border-outline-variant/30"></div>
+<span class="flex-shrink mx-4 text-[10px] font-label uppercase tracking-[0.2em] text-outline">or connect via</span>
+<div class="flex-grow border-t border-outline-variant/30"></div>
+</div>
+<!-- Social Login -->
+<button class="w-full flex items-center justify-center gap-3 py-4 rounded-lg bg-surface-container-highest/50 border border-outline-variant/20 hover:bg-surface-container-highest transition-all duration-300 group">
+<svg class="w-5 h-5 group-hover:scale-110 transition-transform" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+<span class="text-sm font-medium group-hover:text-tertiary transition-colors">Login with Google</span>
+<!-- Glowing ring effect -->
+<div class="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 shadow-[0_0_15px_rgba(38,254,220,0.2)] transition-opacity duration-300"></div>
+</button>
+<p class="text-center text-xs text-on-surface-variant font-label tracking-wide">
+                            New observer? <a class="text-tertiary-fixed font-bold hover:underline" href="#">Apply for Clearance</a>
+</p>
+</div>
+<!-- Ambient Decoration at bottom of card -->
+<div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-tertiary/20 to-transparent"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Meta-data -->
+<footer class="fixed bottom-6 left-6 z-20 hidden md:block">
+<div class="flex items-center gap-4 text-[10px] font-label uppercase tracking-widest text-outline">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">vpn_lock</span>
+<span>v2.0.4-TRADEOS</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline/40"></div>
+<span>v2.0.4-TRADEOS</span>
+</div>
+</footer>
+<!-- Visual Anchor Background Elements -->
+<div class="fixed inset-0 z-[-1] opacity-40 pointer-events-none overflow-hidden">
+<img class="w-full h-full object-cover mix-blend-overlay" data-alt="cinematic deep space view with swirling dark blue and violet cosmic clouds and distant twinkling star clusters" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiTBFdsw-x6Wm8EEtYyxGrhhYykooXRqvGBGjHZuvmUNLWgx1M7VtcZimY7rWsEt1JtjZoeT8BmVjjziD6R9Q1vXdpDpIXFBFzdxhK7iCrt2URx7c8Eiug0cpoxujo62QQnoF2a6s6GXbQjS8M_OlFLLUOyjtrRht35Kev5gZ6UP-fFQWLpkwNA1OC2b0yYxfQigSr7P2_es7kG4yJJXw8xe9N5hoz5MoW1guUZ7c8BNQlDfINArl2OMbqh_hFnjlbFaBa19eIVQ"/>
+</div>
+</body></html>

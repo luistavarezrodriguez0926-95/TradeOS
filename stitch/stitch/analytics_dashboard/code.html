@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeOS | Analytics &amp; Insights</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#000000",
+                        "secondary-container": "#6801d1",
+                        "on-tertiary-container": "#005d4f",
+                        "on-secondary-fixed-variant": "#6b0cd4",
+                        "surface-tint": "#85adff",
+                        "primary-fixed": "#6d9fff",
+                        "error": "#ff6e84",
+                        "error-dim": "#d73357",
+                        "secondary": "#b486ff",
+                        "secondary-dim": "#9149fa",
+                        "tertiary-dim": "#00e8c9",
+                        "tertiary": "#b6ffed",
+                        "on-secondary-fixed": "#470093",
+                        "secondary-fixed": "#dec8ff",
+                        "on-secondary-container": "#e6d4ff",
+                        "on-surface": "#e7e7f1",
+                        "surface-container-highest": "#22262f",
+                        "tertiary-fixed-dim": "#00efce",
+                        "outline": "#73757e",
+                        "secondary-fixed-dim": "#d3b7ff",
+                        "on-primary-container": "#00214f",
+                        "on-tertiary": "#006657",
+                        "on-secondary": "#2d0062",
+                        "on-error": "#490013",
+                        "surface-container-low": "#10131b",
+                        "outline-variant": "#454850",
+                        "primary-fixed-dim": "#5291ff",
+                        "background": "#0b0e15",
+                        "tertiary-container": "#26fedc",
+                        "primary-container": "#6d9fff",
+                        "on-primary": "#002c66",
+                        "primary": "#85adff",
+                        "primary-dim": "#1470e8",
+                        "error-container": "#a70138",
+                        "on-background": "#e7e7f1",
+                        "on-tertiary-fixed": "#00483d",
+                        "on-primary-fixed-variant": "#002a61",
+                        "surface-variant": "#22262f",
+                        "on-surface-variant": "#a9abb4",
+                        "on-primary-fixed": "#000000",
+                        "tertiary-fixed": "#26fedc",
+                        "on-error-container": "#ffb2b9",
+                        "surface-bright": "#282c36",
+                        "inverse-primary": "#005bc3",
+                        "surface": "#0b0e15",
+                        "inverse-on-surface": "#53555d",
+                        "on-tertiary-fixed-variant": "#006859",
+                        "inverse-surface": "#faf9ff",
+                        "surface-dim": "#0b0e15",
+                        "surface-container": "#161922",
+                        "surface-container-high": "#1c1f28"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; background-color: #0b0e15; color: #e7e7f1; }
+        .font-headline { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .nebula-glow { box-shadow: 0 0 20px rgba(38, 254, 220, 0.15); }
+        .glass-panel { backdrop-filter: blur(20px); background: rgba(34, 38, 47, 0.4); }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-slate-950/40 backdrop-blur-xl shadow-[0_20px_40px_rgba(133,173,255,0.08)]">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-['Space_Grotesk'] tracking-tight">TradeOS</span>
+<nav class="hidden md:flex gap-8 items-center font-['Space_Grotesk'] tracking-tight">
+<a class="text-slate-400 hover:text-cyan-200 transition-colors duration-300" href="#">Dashboard</a>
+<a class="text-cyan-300 border-b-2 border-cyan-300 pb-1 hover:text-cyan-200 transition-colors duration-300" href="#">Analytics</a>
+<a class="text-slate-400 hover:text-cyan-200 transition-colors duration-300" href="#">Insights</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-cyan-200 transition-colors duration-300">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-tertiary rounded-full nebula-glow"></span>
+</div>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-cyan-200 transition-colors duration-300">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="User Cosmic Avatar" class="w-full h-full object-cover" data-alt="a stylized portrait of a futuristic trader with neon accents on a dark celestial background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2MR3SyoA5e1_Zb1HUmqkN9U82COKOTXi49VnLd-THMQfPYMrbVeonWPtCJGLpCXANZdloMww4douEoUKBKpTK_px5VDXq0f0vIMoHI0cBej5fEj8HUZQDEG-AmOzEGCr3F9Ib6ZcbxMEDqT5EFHlGhaNnP-U-0ZA4lyG9jznA-GTiwr7cue3-ToyJpawgKYiymuozDC8FkYfXbpOqPoDIILdwZ7iPDjry81Ld8J9WiAjszsluKZpFU7mp16y4who3tB3pFzy30A"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen z-40 flex flex-col pt-24 bg-slate-950/60 backdrop-blur-2xl w-64 font-['Manrope'] font-medium text-sm border-r border-outline-variant/10">
+<div class="px-6 mb-10 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary">admin</span>
+</div>
+<div>
+<p class="text-on-surface font-bold">Commander</p>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 bg-tertiary rounded-full animate-pulse"></span>
+<p class="text-xs text-slate-500">System Online</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">add_chart</span>
+<span>Trades</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">auto_graph</span>
+<span>Habits</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-cyan-300 bg-cyan-500/10 shadow-[0_0_15px_rgba(38,254,220,0.3)] rounded-r-full transition-all translate-x-1" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span>AI Insights</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">architecture</span>
+<span>Strategy</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">school</span>
+<span>Courses</span>
+</a>
+</nav>
+<div class="px-6 py-8 mt-auto space-y-4">
+<button class="w-full py-3 rounded-md bg-gradient-to-r from-primary to-secondary text-on-primary font-bold shadow-lg hover:brightness-110 transition-all active:scale-95">
+                New Trade
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 py-2 text-slate-500 hover:text-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 py-2 text-slate-500 hover:text-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-24 min-h-screen">
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="text-5xl font-headline font-bold text-on-surface tracking-tighter leading-none mb-2">Kinetic Correlation</h1>
+<p class="text-slate-400 max-w-lg">Advanced biometric and behavioral mapping versus trading equity curves. Synchronizing human state with market performance.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/10 text-right">
+<span class="text-xs uppercase tracking-widest text-tertiary">Current Precision</span>
+<div class="text-2xl font-headline font-bold">94.2%</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid Dashboard -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Performance vs Sleep: Line Chart Section -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-low rounded-xl p-6 border border-outline-variant/5 shadow-xl">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="text-xl font-headline font-semibold text-on-surface">Equity vs. Circadian Rhythm</h3>
+<p class="text-sm text-slate-500">Correlation factor: 0.82 (High)</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold border border-primary/20">Daily Profit</span>
+<span class="px-3 py-1 rounded-full bg-secondary/10 text-secondary text-xs font-bold border border-secondary/20">Sleep Hours</span>
+</div>
+</div>
+<!-- Simulated Line Chart -->
+<div class="relative h-64 flex items-end justify-between gap-2">
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="border-t border-outline-variant/10 w-full h-0"></div>
+<div class="border-t border-outline-variant/10 w-full h-0"></div>
+<div class="border-t border-outline-variant/10 w-full h-0"></div>
+<div class="border-t border-outline-variant/10 w-full h-0"></div>
+</div>
+<!-- Chart Bars/Lines representation -->
+<div class="relative w-full h-full flex items-end">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 800 200">
+<path class="drop-shadow-[0_0_10px_rgba(133,173,255,0.4)]" d="M0,150 Q100,50 200,120 T400,80 T600,160 T800,40" fill="none" stroke="url(#gradient-primary)" stroke-width="4"></path>
+<path d="M0,180 Q150,140 300,160 T500,120 T800,100" fill="none" opacity="0.6" stroke="url(#gradient-secondary)" stroke-dasharray="8 4" stroke-width="3"></path>
+<defs>
+<lineargradient id="gradient-primary" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:#85adff;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#b486ff;stop-opacity:1"></stop>
+</lineargradient>
+<lineargradient id="gradient-secondary" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:#b486ff;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#26fedc;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+</div>
+<div class="flex justify-between mt-4 text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+<!-- AI Summary Card -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-6 border border-tertiary/20 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<h3 class="font-headline font-bold text-tertiary">NEBULA AI INSIGHT</h3>
+</div>
+<p class="text-on-surface leading-relaxed italic">"Commander, your win-rate drops by <span class="text-error font-bold">14%</span> on days where deep sleep is below 90 minutes. I recommend delaying market entry until the London open tomorrow."</p>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/10">
+<div class="flex justify-between text-sm mb-2">
+<span class="text-slate-400">Risk Sensitivity</span>
+<span class="text-tertiary">Elevated</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-4/5 nebula-glow"></div>
+</div>
+</div>
+</div>
+<!-- Heatmap: Habit Consistency -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-low rounded-xl p-6 border border-outline-variant/5">
+<h3 class="text-lg font-headline font-semibold text-on-surface mb-6">Execution Consistency Heatmap</h3>
+<div class="grid grid-cols-7 gap-2">
+<!-- Simulated heatmap blocks -->
+<div class="aspect-square bg-tertiary-container/10 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/30 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/60 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/90 rounded-sm nebula-glow border border-tertiary"></div>
+<div class="aspect-square bg-tertiary-container/40 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/5 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/5 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/10 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/80 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/100 rounded-sm nebula-glow"></div>
+<div class="aspect-square bg-tertiary-container/50 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/10 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/60 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/30 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/10 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/40 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/10 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/5 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/10 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/20 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/30 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/10 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/5 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/5 rounded-sm"></div>
+<div class="aspect-square bg-tertiary-container/10 rounded-sm"></div>
+</div>
+<div class="mt-4 flex justify-between items-center text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+<span>Low Focus</span>
+<div class="flex gap-1 h-2 w-24">
+<div class="flex-1 bg-tertiary/10"></div>
+<div class="flex-1 bg-tertiary/30"></div>
+<div class="flex-1 bg-tertiary/60"></div>
+<div class="flex-1 bg-tertiary/90"></div>
+</div>
+<span>Peak Flow</span>
+</div>
+</div>
+<!-- Habits vs RR Ratio -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-low rounded-xl p-6 border border-outline-variant/5">
+<h3 class="text-lg font-headline font-semibold text-on-surface mb-6">Habit Impact on R:R Ratio</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium">Pre-Trade Meditation</span>
+<span class="text-sm font-headline font-bold text-tertiary">+1.2 R:R</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-tertiary w-3/4"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium">Sugar Intake (High)</span>
+<span class="text-sm font-headline font-bold text-error">-0.5 R:R</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error-dim w-1/4"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium">Intense Cardio Session</span>
+<span class="text-sm font-headline font-bold text-secondary">+0.8 R:R</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-secondary to-primary w-1/2"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Weekly Insights Column -->
+<div class="col-span-12 space-y-6">
+<h2 class="text-2xl font-headline font-bold border-l-4 border-primary pl-4">Weekly Core Insights</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-high p-6 rounded-xl border-l-2 border-secondary hover:translate-x-1 transition-transform">
+<div class="flex justify-between mb-4">
+<span class="material-symbols-outlined text-secondary">trending_up</span>
+<span class="text-xs text-slate-500">Volatilty Resilience</span>
+</div>
+<h4 class="font-bold text-lg mb-1">Patience Overflow</h4>
+<p class="text-sm text-slate-400">Holding time increased by 12% during high caffeine weeks without increasing anxiety metrics.</p>
+</div>
+<div class="bg-surface-container-high p-6 rounded-xl border-l-2 border-error hover:translate-x-1 transition-transform">
+<div class="flex justify-between mb-4">
+<span class="material-symbols-outlined text-error">priority_high</span>
+<span class="text-xs text-slate-500">Over-trading Risk</span>
+</div>
+<h4 class="font-bold text-lg mb-1">Fatigue Slippage</h4>
+<p class="text-sm text-slate-400">Post-22:00 UTC execution leads to 40% higher drawdown. Recommend hard lockout.</p>
+</div>
+<div class="bg-surface-container-high p-6 rounded-xl border-l-2 border-tertiary hover:translate-x-1 transition-transform">
+<div class="flex justify-between mb-4">
+<span class="material-symbols-outlined text-tertiary">bolt</span>
+<span class="text-xs text-slate-500">Execution Quality</span>
+</div>
+<h4 class="font-bold text-lg mb-1">Neural Alignment</h4>
+<p class="text-sm text-slate-400">Optimal performance window identified between 13:30 - 16:00 UTC following HRV baseline.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating UI Decoration / Bottom Nav Mobile only -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-slate-900/80 backdrop-blur-xl border-t border-outline-variant/10 flex justify-around p-4 z-50">
+<span class="material-symbols-outlined text-cyan-300">dashboard</span>
+<span class="material-symbols-outlined text-slate-400">query_stats</span>
+<span class="material-symbols-outlined text-slate-400">psychology</span>
+<span class="material-symbols-outlined text-slate-400">person</span>
+</nav>
+</body></html>

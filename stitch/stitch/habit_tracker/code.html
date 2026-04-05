@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeOS | Habit Tracking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#000000",
+                    "secondary-container": "#6801d1",
+                    "on-tertiary-container": "#005d4f",
+                    "on-secondary-fixed-variant": "#6b0cd4",
+                    "surface-tint": "#85adff",
+                    "primary-fixed": "#6d9fff",
+                    "error": "#ff6e84",
+                    "error-dim": "#d73357",
+                    "secondary": "#b486ff",
+                    "secondary-dim": "#9149fa",
+                    "tertiary-dim": "#00e8c9",
+                    "tertiary": "#b6ffed",
+                    "on-secondary-fixed": "#470093",
+                    "secondary-fixed": "#dec8ff",
+                    "on-secondary-container": "#e6d4ff",
+                    "on-surface": "#e7e7f1",
+                    "surface-container-highest": "#22262f",
+                    "tertiary-fixed-dim": "#00efce",
+                    "outline": "#73757e",
+                    "secondary-fixed-dim": "#d3b7ff",
+                    "on-primary-container": "#00214f",
+                    "on-tertiary": "#006657",
+                    "on-secondary": "#2d0062",
+                    "on-error": "#490013",
+                    "surface-container-low": "#10131b",
+                    "outline-variant": "#454850",
+                    "primary-fixed-dim": "#5291ff",
+                    "background": "#0b0e15",
+                    "tertiary-container": "#26fedc",
+                    "primary-container": "#6d9fff",
+                    "on-primary": "#002c66",
+                    "primary": "#85adff",
+                    "primary-dim": "#1470e8",
+                    "error-container": "#a70138",
+                    "on-background": "#e7e7f1",
+                    "on-tertiary-fixed": "#00483d",
+                    "on-primary-fixed-variant": "#002a61",
+                    "surface-variant": "#22262f",
+                    "on-surface-variant": "#a9abb4",
+                    "on-primary-fixed": "#000000",
+                    "tertiary-fixed": "#26fedc",
+                    "on-error-container": "#ffb2b9",
+                    "surface-bright": "#282c36",
+                    "inverse-primary": "#005bc3",
+                    "surface": "#0b0e15",
+                    "inverse-on-surface": "#53555d",
+                    "on-tertiary-fixed-variant": "#006859",
+                    "inverse-surface": "#faf9ff",
+                    "surface-dim": "#0b0e15",
+                    "surface-container": "#161922",
+                    "surface-container-high": "#1c1f28"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Manrope"],
+                    "label": ["Space Grotesk"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0b0e15;
+            color: #e7e7f1;
+            font-family: 'Manrope', sans-serif;
+        }
+        .nebula-glow {
+            box-shadow: 0 0 20px rgba(38, 254, 220, 0.15);
+        }
+        .glass-panel {
+            background: rgba(34, 38, 47, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: #1c1f28;
+            height: 4px;
+            border-radius: 2px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #b6ffed;
+            box-shadow: 0 0 10px rgba(38, 254, 220, 0.6);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-slate-950/40 backdrop-blur-xl shadow-[0_20px_40px_rgba(133,173,255,0.08)]">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-['Space_Grotesk'] tracking-tight">TradeOS</span>
+<div class="hidden md:flex gap-6 font-['Space_Grotesk'] tracking-tight">
+<a class="text-slate-400 hover:text-cyan-200 transition-colors duration-300" href="#">Dashboard</a>
+<a class="text-slate-400 hover:text-cyan-200 transition-colors duration-300" href="#">Analytics</a>
+<a class="text-slate-400 hover:text-cyan-200 transition-colors duration-300" href="#">Insights</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative flex items-center bg-surface-container-low px-4 py-2 rounded-full border border-white/5">
+<span class="material-symbols-outlined text-slate-400 text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 text-on-surface" placeholder="Search constellations..." type="text"/>
+</div>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-cyan-200">notifications</span>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-cyan-200">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20">
+<img alt="User Cosmic Avatar" class="w-full h-full object-cover" data-alt="Portrait of a professional man with clean lighting and a minimalist dark background, high-end corporate aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9mxVtvr0XAgFvPuxr9yFW2cqMuMkULeelo0SFccKEANUxj5IF_gLLkFHjkNhcZpT6yGf-C1zItRfQ2KUExLT1eIFMWTGZQqP8TjiIR5e1ANySrzoC0JRCmh2CLf8LIVD7PsrgMWJMSbNNexOHedtTqolG4BHWlZZSrKLJ4jC9LoZ5yZNfObL1nZrUcCoo1OuhoIK6Qaq4QfOSm4vpVWytpevm3LS6ojmQ6dh6AfQgisD5Coo-iBV8-fiGK3MEimvsBP6yZNi7GA"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen z-40 flex flex-col pt-20 bg-slate-950/60 backdrop-blur-2xl w-64 border-r border-white/5">
+<div class="px-6 py-8 flex flex-col items-center">
+<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary p-0.5 mb-3">
+<div class="w-full h-full bg-surface-container-low rounded-[14px] flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-3xl">psychology</span>
+</div>
+</div>
+<h3 class="font-headline font-bold text-lg text-on-surface">Commander</h3>
+<p class="font-body text-xs text-slate-500 uppercase tracking-widest">System Online</p>
+</div>
+<nav class="flex-1 px-4 space-y-2 font-['Manrope'] font-medium text-sm">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined">add_chart</span>
+<span>Trades</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-cyan-300 bg-cyan-500/10 shadow-[0_0_15px_rgba(38,254,220,0.3)] rounded-r-full" href="#">
+<span class="material-symbols-outlined">auto_graph</span>
+<span>Habits</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span>AI Insights</span>
+</a>
+<div class="pt-4 pb-2 px-4">
+<button class="w-full bg-gradient-to-r from-primary to-secondary text-on-primary-fixed font-bold py-3 rounded-md text-xs tracking-widest uppercase hover:opacity-90 transition-opacity">
+                    New Trade
+                </button>
+</div>
+</nav>
+<div class="p-4 space-y-2 border-t border-white/5 font-['Manrope'] font-medium text-sm">
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 hover:text-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 hover:text-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 pt-24 px-10 pb-12">
+<header class="mb-12">
+<h1 class="font-headline text-5xl font-bold tracking-tighter mb-2">Habit Narrative</h1>
+<p class="font-body text-on-surface-variant max-w-2xl text-lg">Calibrate your biological systems for peak interstellar performance. Your habits are the fuel for the voyage.</p>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Daily Summary / Status -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface-container-low rounded-xl p-8 glass-panel border border-white/5 flex flex-col justify-between h-[320px]">
+<div>
+<div class="flex items-center gap-2 mb-6">
+<div class="w-3 h-3 rounded-full bg-tertiary nebula-glow animate-pulse"></div>
+<span class="text-xs font-headline uppercase tracking-widest text-tertiary">Live Calibration</span>
+</div>
+<h2 class="font-headline text-4xl font-bold mb-4">84%</h2>
+<p class="text-on-surface-variant font-body">Efficiency reached today. You are 12% above your celestial average.</p>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-tertiary w-[84%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-xl p-8 border border-white/5">
+<h3 class="font-headline text-xl font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">flare</span>
+                        Upcoming Milestones
+                    </h3>
+<ul class="space-y-4">
+<li class="flex items-center justify-between">
+<span class="text-on-surface-variant text-sm">Meditation Streak</span>
+<span class="text-secondary font-bold">14 Days</span>
+</li>
+<li class="flex items-center justify-between">
+<span class="text-on-surface-variant text-sm">Deep Sleep Goal</span>
+<span class="text-secondary font-bold">92%</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Interactive Habit Trackers -->
+<div class="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Water Intake -->
+<div class="bg-surface-container-low rounded-xl p-8 border border-white/5 transition-all hover:bg-surface-container-high">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">water_drop</span>
+</div>
+<div class="text-right">
+<span class="block text-2xl font-bold font-headline">2.4L</span>
+<span class="text-xs text-on-surface-variant">of 3.0L Target</span>
+</div>
+</div>
+<h4 class="font-headline font-bold mb-4">Hydration</h4>
+<div class="flex gap-2">
+<div class="flex-1 h-12 bg-primary rounded-md flex items-center justify-center cursor-pointer transition-transform active:scale-95">
+<span class="material-symbols-outlined text-on-primary font-bold">add</span>
+</div>
+<div class="flex-1 h-12 border border-outline-variant/30 rounded-md flex items-center justify-center text-on-surface-variant text-xs">
+                            +250ml
+                        </div>
+</div>
+</div>
+<!-- Exercise -->
+<div class="bg-surface-container-low rounded-xl p-8 border border-white/5 transition-all hover:bg-surface-container-high">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-tertiary/10 rounded-lg">
+<span class="material-symbols-outlined text-tertiary">fitness_center</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-tertiary"></div>
+</label>
+</div>
+<h4 class="font-headline font-bold mb-1">Exercise</h4>
+<p class="text-xs text-on-surface-variant mb-4">High Intensity Interval training completed.</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-xs text-tertiary">Activity Synced</span>
+</div>
+</div>
+<!-- Sleep Slider -->
+<div class="bg-surface-container-low rounded-xl p-8 border border-white/5 transition-all hover:bg-surface-container-high md:col-span-2">
+<div class="flex justify-between items-center mb-8">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-secondary/10 rounded-lg">
+<span class="material-symbols-outlined text-secondary">bedtime</span>
+</div>
+<div>
+<h4 class="font-headline font-bold">Sleep Quality</h4>
+<p class="text-xs text-on-surface-variant">Subjective measurement of restorative depth.</p>
+</div>
+</div>
+<div class="text-3xl font-bold font-headline text-secondary">8.5</div>
+</div>
+<input class="w-full accent-secondary" max="10" min="1" step="0.5" type="range" value="8.5"/>
+<div class="flex justify-between mt-4 text-[10px] uppercase tracking-tighter text-on-surface-variant font-bold">
+<span>Lethargic</span>
+<span>Balanced</span>
+<span>Transcendental</span>
+</div>
+</div>
+<!-- Reading & Meditation (Bento sub-grid) -->
+<div class="bg-surface-container-low rounded-xl p-8 border border-white/5 transition-all hover:bg-surface-container-high">
+<div class="flex items-center gap-4 mb-6">
+<div class="p-3 bg-primary-fixed-dim/10 rounded-lg">
+<span class="material-symbols-outlined text-primary-fixed-dim">menu_book</span>
+</div>
+<h4 class="font-headline font-bold">Reading</h4>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-3 p-3 bg-surface-container-highest rounded-lg cursor-pointer">
+<span class="material-symbols-outlined text-slate-500">radio_button_unchecked</span>
+<span class="text-sm text-on-surface">30 Pages of Technical Theory</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-primary/10 border border-primary/20 rounded-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-sm text-on-surface font-medium">Daily Market Analysis</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-8 border border-white/5 transition-all hover:bg-surface-container-high">
+<div class="flex items-center gap-4 mb-6">
+<div class="p-3 bg-tertiary-container/10 rounded-lg">
+<span class="material-symbols-outlined text-tertiary-container">self_improvement</span>
+</div>
+<h4 class="font-headline font-bold">Meditation</h4>
+</div>
+<div class="text-center py-4 border-2 border-dashed border-outline-variant/20 rounded-xl">
+<span class="material-symbols-outlined text-outline-variant text-4xl mb-2">timer</span>
+<p class="text-xs text-on-surface-variant uppercase tracking-widest">Start 20min Session</p>
+</div>
+</div>
+<!-- Emotional State Heatmap simulation -->
+<div class="bg-surface-container-low rounded-xl p-8 border border-white/5 transition-all hover:bg-surface-container-high md:col-span-2">
+<h4 class="font-headline font-bold mb-6">Emotional Frequency</h4>
+<div class="flex justify-between items-end h-24 gap-2">
+<div class="flex-1 bg-secondary/10 h-[40%] rounded-sm"></div>
+<div class="flex-1 bg-secondary/20 h-[60%] rounded-sm"></div>
+<div class="flex-1 bg-secondary/40 h-[30%] rounded-sm"></div>
+<div class="flex-1 bg-secondary/60 h-[80%] rounded-sm"></div>
+<div class="flex-1 bg-secondary/30 h-[50%] rounded-sm"></div>
+<div class="flex-1 bg-tertiary/80 h-[90%] nebula-glow rounded-sm"></div>
+<div class="flex-1 bg-secondary/50 h-[70%] rounded-sm"></div>
+<div class="flex-1 bg-secondary/20 h-[40%] rounded-sm"></div>
+<div class="flex-1 bg-secondary/10 h-[20%] rounded-sm"></div>
+<div class="flex-1 bg-secondary/40 h-[55%] rounded-sm"></div>
+<div class="flex-1 bg-secondary/70 h-[85%] rounded-sm"></div>
+<div class="flex-1 bg-tertiary/60 h-[75%] rounded-sm"></div>
+</div>
+<div class="flex justify-between mt-4">
+<span class="text-[10px] text-on-surface-variant font-headline uppercase tracking-widest">Mon</span>
+<span class="text-[10px] text-on-surface-variant font-headline uppercase tracking-widest text-tertiary">Current (Sun)</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (Limited context: Home/Habits Dashboard) -->
+<div class="fixed bottom-10 right-10">
+<button class="w-16 h-16 rounded-full bg-gradient-to-tr from-primary to-secondary flex items-center justify-center shadow-[0_10px_30px_rgba(133,173,255,0.4)] hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-on-primary text-3xl font-bold">add</span>
+</button>
+</div>
+</body></html>

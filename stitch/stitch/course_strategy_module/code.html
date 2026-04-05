@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeOS | Learning Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0b0e15;
+            color: #e7e7f1;
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+        }
+        .font-headline { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .nebula-pulse {
+            box-shadow: 0 0 15px rgba(38, 254, 220, 0.3);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0e15;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #454850;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#000000",
+                        "secondary-container": "#6801d1",
+                        "on-tertiary-container": "#005d4f",
+                        "on-secondary-fixed-variant": "#6b0cd4",
+                        "surface-tint": "#85adff",
+                        "primary-fixed": "#6d9fff",
+                        "error": "#ff6e84",
+                        "error-dim": "#d73357",
+                        "secondary": "#b486ff",
+                        "secondary-dim": "#9149fa",
+                        "tertiary-dim": "#00e8c9",
+                        "tertiary": "#b6ffed",
+                        "on-secondary-fixed": "#470093",
+                        "secondary-fixed": "#dec8ff",
+                        "on-secondary-container": "#e6d4ff",
+                        "on-surface": "#e7e7f1",
+                        "surface-container-highest": "#22262f",
+                        "tertiary-fixed-dim": "#00efce",
+                        "outline": "#73757e",
+                        "secondary-fixed-dim": "#d3b7ff",
+                        "on-primary-container": "#00214f",
+                        "on-tertiary": "#006657",
+                        "on-secondary": "#2d0062",
+                        "on-error": "#490013",
+                        "surface-container-low": "#10131b",
+                        "outline-variant": "#454850",
+                        "primary-fixed-dim": "#5291ff",
+                        "background": "#0b0e15",
+                        "tertiary-container": "#26fedc",
+                        "primary-container": "#6d9fff",
+                        "on-primary": "#002c66",
+                        "primary": "#85adff",
+                        "primary-dim": "#1470e8",
+                        "error-container": "#a70138",
+                        "on-background": "#e7e7f1",
+                        "on-tertiary-fixed": "#00483d",
+                        "on-primary-fixed-variant": "#002a61",
+                        "surface-variant": "#22262f",
+                        "on-surface-variant": "#a9abb4",
+                        "on-primary-fixed": "#000000",
+                        "tertiary-fixed": "#26fedc",
+                        "on-error-container": "#ffb2b9",
+                        "surface-bright": "#282c36",
+                        "inverse-primary": "#005bc3",
+                        "surface": "#0b0e15",
+                        "inverse-on-surface": "#53555d",
+                        "on-tertiary-fixed-variant": "#006859",
+                        "inverse-surface": "#faf9ff",
+                        "surface-dim": "#0b0e15",
+                        "surface-container": "#161922",
+                        "surface-container-high": "#1c1f28"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-slate-950/40 backdrop-blur-xl shadow-[0_20px_40px_rgba(133,173,255,0.08)]">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-headline tracking-tight">TradeOS</span>
+<div class="hidden md:flex gap-6">
+<a class="text-slate-400 font-headline tracking-tight hover:text-cyan-200 transition-colors duration-300" href="#">Dashboard</a>
+<a class="text-slate-400 font-headline tracking-tight hover:text-cyan-200 transition-colors duration-300" href="#">Analytics</a>
+<a class="text-cyan-300 border-b-2 border-cyan-300 pb-1 font-headline tracking-tight" href="#">Courses</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-low border-none rounded-sm px-4 py-2 text-sm w-64 focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="Search knowledge base..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-slate-400 hover:text-cyan-200 transition-colors scale-95 active:scale-90" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-slate-400 hover:text-cyan-200 transition-colors scale-95 active:scale-90" data-icon="settings">settings</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/30">
+<img alt="User Cosmic Avatar" data-alt="close-up portrait of a woman with neon light reflections on her face, futuristic aesthetic, vibrant purple and blue lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPh3VzMNk8POHRGzweTFrB7mACYLKZWxWW2U-dzG5QDl85zJw733LtNdMiq_OywD6nmGEB13EFsqNtgVxmgySwNxmfUuzztSpLARlN0LhgHntWAvvfqTZ3f0jb3qTU1L-dDsGXp1zIeDm_WdeIPH-nH-ZYD-lHDBOAJDLETuTDGxgJ43m7EbiEEHBYrX8NtkED14VCk0UOcaS-j7P4K_d6mQCPcG7oja9iKQvvExZuRpwAemrfB4x337MMd5HChmjzhQpPp0xn9w"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen z-40 flex flex-col pt-20 bg-slate-950/60 backdrop-blur-2xl w-64 hidden md:flex">
+<div class="px-6 py-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary p-[2px]">
+<div class="w-full h-full rounded-full overflow-hidden bg-background">
+<img alt="Nebula Profile" data-alt="abstract nebula with vibrant gas clouds and bright stars in deep space, purple and cyan color palette" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADe8MdFJKx2iRlYHki9yGGC_CxvAZgT8M8Wf6lzPe7jhRN0Klqj5JQfYPIApeUMbMhZ8L56fdBJI2PAd4Ejz-33CKq7ZoQvzTUmv-jJITsGSdX_oH8uzqpdidFZLXO-A1oxGwXRlj9xyyH8uXJ9zsjNmWnI35RX3eH_IQwBfy1ara_jaa7Zg-mEOQHZhnjdLb5Fz7atsVD7LzuAXJH9xKUyllzSzVNgyOKlx31SEMzYG2-oEK2Cof3FSbtpWIObAjynQzEfwhGYg"/>
+</div>
+</div>
+<div>
+<p class="font-headline font-bold text-on-surface">Commander</p>
+<p class="text-[10px] text-tertiary-fixed tracking-widest uppercase flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary nebula-pulse"></span>
+                    System Online
+                </p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all rounded-md font-medium text-sm group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all rounded-md font-medium text-sm group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="add_chart">add_chart</span>
+<span>Trades</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-cyan-300 bg-cyan-500/10 shadow-[0_0_15px_rgba(38,254,220,0.3)] rounded-r-full font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span>Courses</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all rounded-md font-medium text-sm group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="query_stats">query_stats</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all rounded-md font-medium text-sm group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="psychology">psychology</span>
+<span>AI Insights</span>
+</a>
+</nav>
+<div class="p-4 mt-auto space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 transition-all font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 transition-all font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:ml-64 pt-24 pb-12 px-8 min-h-screen bg-background">
+<!-- Hero Header -->
+<header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-2xl">
+<div class="flex items-center gap-2 text-tertiary-fixed text-xs font-headline uppercase tracking-[0.2em] mb-4">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+                    Course Track: Quantum Arbitrage
+                </div>
+<h1 class="text-5xl md:text-6xl font-headline font-bold text-on-surface tracking-tighter leading-tight mb-4">
+                    Neural Systems <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">&amp; Architecture</span>
+</h1>
+<p class="text-on-surface-variant text-lg max-w-xl">Master the fundamental principles of cosmic trading algorithms and automated nebula-scale data processing.</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="flex items-center gap-4 mb-2">
+<span class="text-sm font-headline text-slate-400">Overall Progress</span>
+<span class="text-2xl font-bold font-headline text-tertiary">64%</span>
+</div>
+<div class="w-64 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-tertiary" style="width: 64%"></div>
+</div>
+</div>
+</header>
+<!-- Bento Grid Sections -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left Column: Module Navigation -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Active Module Card -->
+<div class="bg-surface-container-low rounded-xl p-8 border border-white/[0.03] shadow-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] -mr-32 -mt-32"></div>
+<div class="relative z-10">
+<div class="flex items-start justify-between mb-8">
+<div>
+<span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded-full mb-4 inline-block">Module 04 • In Progress</span>
+<h2 class="text-3xl font-headline font-bold text-on-surface mb-2">High-Frequency Pulsar Streams</h2>
+<p class="text-on-surface-variant text-sm">Learning to capture and analyze data from millisecond-level market fluctuations.</p>
+</div>
+<div class="w-16 h-16 rounded-full border-2 border-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-primary" data-icon="stream">stream</span>
+</div>
+</div>
+<!-- Lessons List -->
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 rounded-lg bg-surface-container-high/50 hover:bg-surface-container-high transition-colors cursor-pointer group/item">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-tertiary/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-sm" data-icon="check" data-weight="fill">check</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-on-surface">4.1 Introduction to Signal Decay</h4>
+<p class="text-[10px] text-slate-500 uppercase tracking-tighter">12 Minutes • Completed</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-600 group-hover/item:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div class="flex items-center justify-between p-4 rounded-lg bg-primary-container/10 border border-primary/20 hover:bg-primary-container/20 transition-all cursor-pointer group/item nebula-pulse">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-sm" data-icon="play_arrow" data-weight="fill">play_arrow</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-primary">4.2 Real-time Flux Correction</h4>
+<p class="text-[10px] text-primary/70 uppercase tracking-tighter">24 Minutes • Resuming...</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary group-hover/item:translate-x-1 transition-transform" data-icon="double_arrow">double_arrow</span>
+</div>
+<div class="flex items-center justify-between p-4 rounded-lg bg-surface-container-low border border-outline-variant/10 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer group/item">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-on-surface">4.3 Quantum Liquidity Mapping</h4>
+<p class="text-[10px] text-slate-500 uppercase tracking-tighter">18 Minutes • Locked</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-600" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Next Modules Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container-low/40 backdrop-blur-md rounded-xl p-6 border border-white/[0.02] hover:bg-surface-container-low/60 transition-all cursor-pointer">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary mb-4">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+</div>
+<h3 class="font-headline font-bold text-on-surface mb-2">Module 05: Synthetics</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2">Creating artificial liquidity zones in low-density nebular clusters.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant/10 flex justify-between items-center">
+<span class="text-[10px] text-slate-500 font-bold uppercase">Locked</span>
+<span class="material-symbols-outlined text-slate-600 text-sm" data-icon="lock">lock</span>
+</div>
+</div>
+<div class="bg-surface-container-low/40 backdrop-blur-md rounded-xl p-6 border border-white/[0.02] hover:bg-surface-container-low/60 transition-all cursor-pointer">
+<div class="w-10 h-10 rounded-lg bg-purple-400/10 flex items-center justify-center text-purple-400 mb-4">
+<span class="material-symbols-outlined" data-icon="auto_graph">auto_graph</span>
+</div>
+<h3 class="font-headline font-bold text-on-surface mb-2">Module 06: Epoch Cycles</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2">Understanding the long-term gravitational shifts in capital flow.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant/10 flex justify-between items-center">
+<span class="text-[10px] text-slate-500 font-bold uppercase">Locked</span>
+<span class="material-symbols-outlined text-slate-600 text-sm" data-icon="lock">lock</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Sidebar Stats & AI -->
+<div class="lg:col-span-4 space-y-6">
+<!-- AI Assistant Hint -->
+<div class="bg-gradient-to-br from-secondary-container/30 to-background rounded-xl p-6 border border-secondary/20 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 text-secondary/10 scale-[2] pointer-events-none">
+<span class="material-symbols-outlined text-8xl" data-icon="psychology">psychology</span>
+</div>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-on-secondary shadow-lg">
+<span class="material-symbols-outlined text-sm" data-icon="smart_toy">smart_toy</span>
+</div>
+<span class="text-sm font-headline font-bold text-secondary-fixed tracking-tight">Nebula AI Guide</span>
+</div>
+<div class="space-y-3 relative z-10">
+<p class="text-sm italic text-on-surface leading-relaxed">
+                            "I noticed you're spending more time on **Real-time Flux Correction**. Would you like me to generate a simulation set specifically for signal decay in high-volatility zones?"
+                        </p>
+<div class="flex gap-2">
+<button class="flex-1 py-2 rounded bg-secondary text-on-secondary text-xs font-bold hover:brightness-110 transition-all">Yes, Generate</button>
+<button class="flex-1 py-2 rounded border border-secondary/30 text-secondary-fixed text-xs font-bold hover:bg-secondary/5 transition-all">Not now</button>
+</div>
+</div>
+</div>
+<!-- Learning Achievements Card -->
+<div class="bg-surface-container-low rounded-xl p-6 border border-white/[0.03]">
+<h3 class="font-headline font-bold text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="military_tech">military_tech</span>
+                        Milestones
+                    </h3>
+<div class="space-y-4">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded bg-surface-container-high flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="verified" data-weight="fill">verified</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-on-surface">Data Pioneer</h4>
+<p class="text-xs text-on-surface-variant">Completed 5 Intro modules</p>
+</div>
+</div>
+<div class="flex gap-4 opacity-40">
+<div class="w-12 h-12 rounded bg-surface-container-high flex-shrink-0 flex items-center justify-center grayscale">
+<span class="material-symbols-outlined text-primary" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-on-surface">Orbital Master</h4>
+<p class="text-xs text-on-surface-variant">Score 95% on final exam</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 text-[10px] font-bold uppercase tracking-widest text-slate-500 border border-outline-variant/20 rounded hover:text-on-surface hover:border-outline-variant/40 transition-all">View All Badges</button>
+</div>
+<!-- Quick Stats -->
+<div class="bg-surface-container-low rounded-xl p-6 border border-white/[0.03]">
+<div class="grid grid-cols-2 gap-4">
+<div class="text-center p-4 rounded-lg bg-surface-container-high/40">
+<p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Total Hours</p>
+<p class="text-2xl font-headline font-bold text-primary">42.8</p>
+</div>
+<div class="text-center p-4 rounded-lg bg-surface-container-high/40">
+<p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Rank</p>
+<p class="text-2xl font-headline font-bold text-secondary">#142</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Course Resources Section (Expandable/Horizontal Scroll Style) -->
+<section class="mt-12">
+<h2 class="text-2xl font-headline font-bold text-on-surface mb-8 flex items-center gap-3">
+<span class="w-8 h-[2px] bg-primary"></span>
+                Reference Archives
+            </h2>
+<div class="flex gap-6 overflow-x-auto pb-8 no-scrollbar">
+<div class="min-w-[300px] group cursor-pointer">
+<div class="h-40 rounded-xl mb-4 overflow-hidden relative border border-white/5">
+<img alt="Resource 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="high-tech digital world map with blue light nodes and data connections, glowing network lines on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbYoULynaKSLvXfLzXjSMGl65ml-xEDaxITsY7usSFFoYjF1YUYIYZyU2gNSG-nQsn8-Z632fQBv4i6yjbv7vpFftyBn0JdsaIX-_y2Bcb_awCMtvHZun2rgxdwG27HJFPQt_VjnGRVKozTdwOHJ1pdgYsw3IRocWCu3nwMB4MAbWQFkVu6cNqrPGJDZ5ES4Qu7bHEO_CgjDzU2OQi_8Lk02UwuN1HJQHwet2TQF23LOqOPN9gqotDGZcp0SDBu37yfsiFPkQg9w"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60"></div>
+<div class="absolute bottom-4 left-4">
+<span class="bg-primary/20 backdrop-blur-md text-primary text-[10px] font-bold px-2 py-1 rounded">PDF DOCUMENT</span>
+</div>
+</div>
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Quantum Signal Analysis 101</h4>
+<p class="text-xs text-on-surface-variant">Theoretical foundations of sub-second market data.</p>
+</div>
+<div class="min-w-[300px] group cursor-pointer">
+<div class="h-40 rounded-xl mb-4 overflow-hidden relative border border-white/5">
+<img alt="Resource 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="close up of complex futuristic computer circuit board with glowing green and blue lights, high-tech engineering aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsR8MI5t8HNffYj0UZUGdAi_NYhxJ-EDZrHNuwzPjGWqfFbaimF_M2yYcQAMvHZPwqszWNJe4jNa8vA8fS-OE9XIZhDXaJcijp9b3rfjAKJzk53imMFawmxaq0btIjtjQClex71oKlhXf0zBpp1tTnheFWbo8Esjtf0cvca1ja5V-XGb4h9-2loshMU9TKKysMJCMEVKEOeerOvi0JRP3NxQFx1tD3pFhA1kg7FYI7lBzBQzVpkA7FbaPffMmLxP03yTQBNqsS7Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60"></div>
+<div class="absolute bottom-4 left-4">
+<span class="bg-secondary/20 backdrop-blur-md text-secondary text-[10px] font-bold px-2 py-1 rounded">VIDEO LECTURE</span>
+</div>
+</div>
+<h4 class="font-bold text-on-surface group-hover:text-secondary transition-colors">Nebula Infrastructure Setup</h4>
+<p class="text-xs text-on-surface-variant">Live walkthrough of system calibration and nodes.</p>
+</div>
+<div class="min-w-[300px] group cursor-pointer">
+<div class="h-40 rounded-xl mb-4 overflow-hidden relative border border-white/5">
+<img alt="Resource 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="minimalist financial chart display on a dark glass screen with abstract data points and glowing trend lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMQ_b50iZYfBU_Dv13_FxMvFuPe52caNY9a8f2UTlSK8bErCaUSZdNT8Z-NA7uW-yaa33cMWxNP8WuhNtU1PXHWae9mQrMwvYv9PO8xF_EFSJQUWlxWeAHUfBKmhR59c0tXFv-YP71krXjYj5sAA8ZqJLbIcRqvSQqpiLq64zMJzASNeohXlV1MlKGImBY4viDuADTmtWb4E1ZfkxpduO42y5USpLEeLnHStqXd7zw6DjXSjYDnjuTLDWvySaDLnTyDEqVSu46UA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60"></div>
+<div class="absolute bottom-4 left-4">
+<span class="bg-tertiary/20 backdrop-blur-md text-tertiary text-[10px] font-bold px-2 py-1 rounded">INTERACTIVE DATA</span>
+</div>
+</div>
+<h4 class="font-bold text-on-surface group-hover:text-tertiary transition-colors">Backtest Explorer v2.4</h4>
+<p class="text-xs text-on-surface-variant">Run simulations on historical pulsar data streams.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-slate-950/80 backdrop-blur-xl border-t border-white/5 flex justify-around items-center py-4 px-2 z-50">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-cyan-300" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="text-[10px]">Courses</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="text-[10px]">AI</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px]">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button -->
+<button class="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-secondary text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</body></html>
