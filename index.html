@@ -304,6 +304,7 @@
         import { Storage } from './js/storage.js';
         import { UIManager } from './js/ui-manager.js';
         import { i18n } from './js/i18n.js';
+        import { NewsService } from './js/news-service.js';
 
         let currentTrades = [];
         let currentAccount = null;
@@ -338,6 +339,9 @@
                     updateDashboard();
                     populateAccountForm();
                 });
+
+                // Initial News Fetch
+                renderNews();
             }
         });
 
@@ -417,6 +421,27 @@
                         </tr>
                     `;
                 }).join('');
+        };
+
+        const renderNews = async () => {
+            const newsFeed = document.getElementById('news-feed');
+            const lang = i18n.currentLocale;
+            const news = await NewsService.getLatestNews(lang);
+
+            if (!news || news.length === 0) {
+                newsFeed.innerHTML = `<div class="py-8 text-center text-slate-500 text-xs" data-i18n="no_news">${i18n.t('no_news')}</div>`;
+                return;
+            }
+
+            newsFeed.innerHTML = news.map(item => `
+                <a href="${item.link}" target="_blank" class="block p-4 bg-white/5 hover:bg-white/10 rounded-xl border border-white/5 transition-all group">
+                    <h4 class="text-xs font-bold text-on-surface group-hover:text-primary transition-colors leading-tight mb-2">${item.title}</h4>
+                    <div class="flex justify-between items-center opacity-40">
+                        <span class="text-[8px] uppercase font-bold tracking-widest">${item.source}</span>
+                        <span class="text-[8px] uppercase font-bold">${new Date(item.pubDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    </div>
+                </a>
+            `).join('');
         };
 
         const populateAccountForm = () => {

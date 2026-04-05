@@ -130,7 +130,12 @@ const translations = {
         result_pl: "Result (P/L)",
         save_trade: "SAVE TRADE",
         trade_summary: "Trade Summary",
-        enter_trade_details: "Enter trade details to see projected metrics."
+        enter_trade_details: "Enter trade details to see projected metrics.",
+        market_intelligence: "Market Intelligence",
+        latest_flux: "Latest Market Flux",
+        read_full_intel: "Read Full Intel",
+        source: "Source",
+        no_news: "No news detected in current sector."
     },
     es: {
         // Nav
@@ -257,7 +262,12 @@ const translations = {
         result_pl: "Resultado (P/L)",
         save_trade: "GUARDAR TRADE",
         trade_summary: "Resumen del Trade",
-        enter_trade_details: "Ingrese los detalles para ver métricas proyectadas."
+        enter_trade_details: "Ingrese los detalles para ver métricas proyectadas.",
+        market_intelligence: "Inteligencia de Mercado",
+        latest_flux: "Noticias del Mercado",
+        read_full_intel: "Leer Informe Completo",
+        source: "Fuente",
+        no_news: "No se detectaron noticias en este sector."
     }
 };
 
