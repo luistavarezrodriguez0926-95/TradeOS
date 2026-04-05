@@ -383,11 +383,11 @@ export const Storage = {
         const profileRef = doc(db, "users", uid, "settings", "profile");
         const docSnap = await getDoc(profileRef);
         return docSnap.exists() ? docSnap.data() : {
-            displayName: auth.currentUser?.email?.split('@')[0] || 'Admiral',
-            avatar: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-            theme: 'dark',
-            language: 'en',
-            plan: 'nebula'
+            displayName: profileData?.displayName || "Admiral",
+            avatar: profileData?.avatar || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+            language: profileData?.language || "en",
+            theme: profileData?.theme || "dark",
+            plan: 'pro'
         };
     },
 
@@ -396,21 +396,5 @@ export const Storage = {
         const profileRef = doc(db, "users", uid, "settings", "profile");
         await setDoc(profileRef, profile, { merge: true });
         return profile;
-    },
-
-    createCheckoutSession: async (planId) => {
-        console.log(`Simulating checkout for plan: ${planId}`);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        return `pricing.html?session_id=mock_session_${Date.now()}&plan=${planId}`;
-    },
-
-    verifyCheckout: async (sessionId, planId) => {
-        if (sessionId.startsWith('mock_session_')) {
-            const profile = await Storage.getProfile();
-            profile.plan = planId;
-            await Storage.saveProfile(profile);
-            return true;
-        }
-        return false;
     }
 };

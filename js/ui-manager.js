@@ -8,28 +8,28 @@ import { i18n } from './i18n.js';
 
 export const UIManager = {
     /**
+     * Initialize UI settings from the user's profile.
+     */
     init: async () => {
-        const profile = await Storage.getProfile();
-        
-        // Apply Theme
-        UIManager.setTheme(profile.theme || 'dark');
-        
-        // Apply Language
-        UIManager.setLanguage(profile.language || 'en');
-        
-        // Apply Cosmic Effects
-        document.body.classList.add('cosmic-bg');
-        UIManager.initToastContainer();
-        
-        // Handle Feature Gating
-        const currentPage = window.location.pathname.split('/').pop();
-        if (currentPage === 'insights.html') {
-            UIManager.checkAccess(profile.plan, 'supernova');
-        } else if (currentPage === 'calendar.html') {
-            UIManager.checkAccess(profile.plan, 'supernova');
+        try {
+            const profile = await Storage.getProfile();
+            
+            // Apply Theme
+            UIManager.setTheme(profile.theme || 'dark');
+            
+            // Apply Language
+            UIManager.setLanguage(profile.language || 'en');
+            
+            // Apply Cosmic Effects
+            document.body.classList.add('cosmic-bg');
+            UIManager.initToastContainer();
+            
+            // All features are now unlocked by default in the unified TradeOS suite.
+            return profile;
+        } catch (e) {
+            console.error("Dashboard Init Failure:", e);
+            return { displayName: 'Admiral', theme: 'dark', language: 'en' };
         }
-        
-        return profile;
     },
 
     /**
@@ -71,33 +71,10 @@ export const UIManager = {
     },
 
     /**
-     * Check if the user's plan supports a specific feature.
-     * Redirects to pricing.html if not.
+     * Unified access check (always true since the suite is now open-access).
+     * Maintained for compatibility with existing modules.
      */
-    checkAccess: (userPlan, requiredTier) => {
-        const tiers = { nebula: 0, supernova: 1, galactic: 2 };
-        if (tiers[userPlan] < tiers[requiredTier]) {
-            console.warn(`Access Denied: ${userPlan} < ${requiredTier}. Redirecting to pricing...`);
-            // Show a brief message before redirecting
-            const overlay = document.createElement('div');
-            overlay.className = 'fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center text-center p-8';
-            overlay.innerHTML = `
-                <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
-                    <span class="material-symbols-outlined text-4xl text-primary">lock</span>
-                </div>
-                <h2 class="text-3xl font-headline font-bold text-white mb-4">Command Restricted</h2>
-                <p class="text-slate-400 max-w-md mb-8">The ${requiredTier.toUpperCase()} protocol is required to access this sector of the Nebula Intelligence suite.</p>
-                <button onclick="window.location.href='pricing.html'" class="px-8 py-4 bg-primary text-slate-950 font-bold rounded-lg hover:shadow-[0_0_20px_#85adff] transition-all">
-                    UPGRADE SUBSCRIPTION
-                </button>
-            `;
-            document.body.appendChild(overlay);
-            
-            // Still return false for caller logic
-            return false;
-        }
-        return true;
-    },
+    checkAccess: () => true,
 
     /**
      * Apply Theme to the document.

@@ -18,19 +18,6 @@ const translations = {
         // Dashboard
         system_protocol: "System Protocol",
 
-        // Pricing
-        pricing_title: "Cosmic Subscription",
-        pricing_subtitle: "Choose your trajectory. Scale your edge with interstellar precision.",
-        nebula_desc: "Essential tracking for the fundamental trader.",
-        supernova_desc: "Enhanced intelligence for the consistent performer.",
-        galactic_desc: "Full-spectrum command for the professional institution.",
-        free: "Free",
-        current_plan: "Current Plan",
-        get_started: "Get Started",
-        upgrade_now: "Upgrade Now",
-        features_included: "Features Included",
-        nebula_features: ["Basic Journaling", "Daily Calibration", "Standard Dashboard"],
-        supernova_features: ["Nebula Intelligence (AI)", "Full History Access", "Calendar Synchronization"],
         galactic_features: ["Multi-Account Sentinel", "Priority Performance Sync", "Zero Latency Support"],
         system_performance: "System Performance",
         welcome_back: "Welcome back, Commander. Here's your current market standing.",
@@ -150,19 +137,6 @@ const translations = {
         // Dashboard
         system_protocol: "Protocolo del Sistema",
 
-        // Pricing
-        pricing_title: "Suscripción Cósmica",
-        pricing_subtitle: "Elija su trayectoria. Escale su ventaja con precisión interestelar.",
-        nebula_desc: "Seguimiento esencial para el trader fundamental.",
-        supernova_desc: "Inteligencia mejorada para el operador consistente.",
-        galactic_desc: "Comando de espectro completo para la institución profesional.",
-        free: "Gratis",
-        current_plan: "Plan Actual",
-        get_started: "Comenzar",
-        upgrade_now: "Actualizar Ahora",
-        features_included: "Funciones Incluidas",
-        nebula_features: ["Diario Básico", "Calibración Diaria", "Panel Estándar"],
-        supernova_features: ["Inteligencia Nebula (AI)", "Acceso a Historial Completo", "Sincronización de Calendario"],
         galactic_features: ["Centinela Multi-Cuenta", "Sincronización de Prioridad", "Soporte de Latencia Cero"],
         system_performance: "Rendimiento del Sistema",
         welcome_back: "Bienvenido, Comandante. Aquí está su estado actual en el mercado.",

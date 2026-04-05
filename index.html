@@ -86,10 +86,7 @@
                 <span class="material-symbols-outlined">auto_graph</span>
                 Habits
             </a>
-            <a id="nav-upgrade" class="flex items-center gap-3 px-4 py-3 text-amber-300 hover:text-amber-100 transition-all font-bold text-sm mt-4 bg-amber-500/10 border-l-4 border-amber-400 group" href="pricing.html">
-                <span class="material-symbols-outlined group-hover:rotate-12 transition-transform">rocket_launch</span>
-                <span data-i18n="upgrade_now">Upgrade Now</span>
-            </a>
+
         </nav>
     </aside>
 
@@ -282,15 +279,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="p-4 bg-primary/10 rounded-xl border border-primary/20 flex justify-between items-center">
-                    <div>
-                        <p class="text-[10px] uppercase font-bold text-slate-500 mb-1">Current Sector</p>
-                        <p id="profile-plan-name" class="font-headline font-bold text-lg text-primary uppercase">NEBULA</p>
-                    </div>
-                    <button type="button" onclick="window.location.href='pricing.html'" class="px-4 py-2 bg-primary text-slate-950 text-[10px] font-bold rounded-lg uppercase tracking-widest">
-                        Change
-                    </button>
-                </div>
+
                 <div class="flex gap-4 pt-4">
                     <button data-i18n="cancel" type="button" onclick="document.getElementById('profile-modal').classList.add('hidden')" class="flex-1 py-3 text-slate-400 font-bold">Cancel</button>
                     <button data-i18n="update_profile" type="submit" class="flex-1 py-3 bg-secondary text-on-primary font-bold rounded-lg hover:shadow-[0_0_15px_#b486ff]">Update Profile</button>
@@ -320,12 +309,6 @@
                 const profile = await UIManager.init();
                 document.getElementById('user-display-name').textContent = profile.displayName;
                 document.getElementById('user-avatar').src = profile.avatar;
-                
-                // Subscription Logic
-                document.getElementById('profile-plan-name').textContent = profile.plan || 'nebula';
-                if (profile.plan !== 'nebula') {
-                    document.getElementById('nav-upgrade').classList.add('hidden');
-                }
 
                 // Subscribe to Real-time Updates
                 Storage.subscribeToTrades((trades) => {
