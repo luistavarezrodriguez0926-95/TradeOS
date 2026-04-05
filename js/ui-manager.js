@@ -136,5 +136,8 @@ export const UIManager = {
         
         UIManager.setLanguage(lang);
         await Storage.saveProfile(profile);
+        window.location.reload();
     }
 };
+
+window.UIManager = UIManager;

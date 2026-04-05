@@ -11,8 +11,7 @@ import { db, auth, doc, setDoc, getDoc, getDocs, collection, query, where, delet
  */
 const getUid = () => {
     const user = auth.currentUser;
-    if (!user) throw new Error("Unauthenticated request. Force session refresh.");
-    return user.uid;
+    return user ? user.uid : null;
 };
 
 export const Storage = {
@@ -21,6 +20,7 @@ export const Storage = {
      */
     subscribeToTrades: (callback) => {
         const uid = getUid();
+        if (!uid) { callback([]); return; }
         const q = collection(db, "users", uid, "trades");
         
         // Initial load from cache
@@ -39,6 +39,7 @@ export const Storage = {
      */
     subscribeToAccount: (callback) => {
         const uid = getUid();
+        if (!uid) return;
         const accountRef = doc(db, "users", uid, "settings", "account");
 
         // Initial load from cache
@@ -69,6 +70,7 @@ export const Storage = {
     getTrades: async () => {
         try {
             const uid = getUid();
+            if (!uid) return [];
             const q = collection(db, "users", uid, "trades");
             const snapshot = await getDocs(q);
             return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -83,6 +85,7 @@ export const Storage = {
      */
     saveTrade: async (trade) => {
         const uid = getUid();
+        if (!uid) throw new Error("Authentication required to save trades.");
         
         // Safety Lock check
         const metrics = await Storage.getPropFirmMetrics();
@@ -150,6 +153,7 @@ export const Storage = {
      */
     getHabit: async (date) => {
         const uid = getUid();
+        if (!uid) return { exercise: false, water: 0, sleep: 7, meditation: false, reading: false, stress: 5, focus: 5, notes: '' };
         const habitRef = doc(db, "users", uid, "habits", date);
         const docSnap = await getDoc(habitRef);
         
@@ -170,6 +174,7 @@ export const Storage = {
      */
     saveHabit: async (date, data) => {
         const uid = getUid();
+        if (!uid) return;
         const habitRef = doc(db, "users", uid, "habits", date);
         await setDoc(habitRef, data, { merge: true });
     },
@@ -303,6 +308,7 @@ export const Storage = {
         }
 
         const uid = getUid();
+        if (!uid) return [...macroSeeds].sort((a, b) => a.time.localeCompare(b.time));
         const eventsColl = collection(db, "users", uid, "events");
         const q = query(eventsColl, where("date", "==", dateStr));
         const snapshot = await getDocs(q);
@@ -313,6 +319,7 @@ export const Storage = {
 
     saveEvent: async (event) => {
         const uid = getUid();
+        if (!uid) return;
         if (!event.id) event.id = Date.now().toString();
         event.type = 'personal';
         
@@ -330,6 +337,7 @@ export const Storage = {
 
     getAccount: async () => {
         const uid = getUid();
+        if (!uid) return { balance: 100000, dailyLimit: 5, maxDrawdown: 10, target: 10, phase: 'Stage 1', manualStatus: null };
         const accountRef = doc(db, "users", uid, "settings", "account");
         const docSnap = await getDoc(accountRef);
         
@@ -345,6 +353,7 @@ export const Storage = {
 
     saveAccount: async (account) => {
         const uid = getUid();
+        if (!uid) return;
         const accountRef = doc(db, "users", uid, "settings", "account");
         await setDoc(accountRef, account, { merge: true });
         return account;
@@ -380,6 +389,7 @@ export const Storage = {
 
     getProfile: async () => {
         const uid = getUid();
+        if (!uid) return { displayName: "Admiral", avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", language: "en", theme: "dark", plan: 'pro' };
         const profileRef = doc(db, "users", uid, "settings", "profile");
         const docSnap = await getDoc(profileRef);
         return docSnap.exists() ? docSnap.data() : {
@@ -393,6 +403,7 @@ export const Storage = {
 
     saveProfile: async (profile) => {
         const uid = getUid();
+        if (!uid) return;
         const profileRef = doc(db, "users", uid, "settings", "profile");
         await setDoc(profileRef, profile, { merge: true });
         return profile;
