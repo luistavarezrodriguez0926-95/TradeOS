@@ -152,34 +152,37 @@
         import { i18n } from './js/i18n.js';
         import { NewsService } from './js/news-service.js';
 
-        // Bind Language Switcher
-        document.getElementById('lang-en').onclick = () => UIManager.changeLanguage('en');
-        document.getElementById('lang-es').onclick = () => UIManager.changeLanguage('es');
+        try {
+            document.getElementById('lang-en').onclick = () => UIManager.changeLanguage('en');
+            document.getElementById('lang-es').onclick = () => UIManager.changeLanguage('es');
+            document.getElementById('logout-btn').onclick = () => signOut(auth);
+        } catch (e) { console.warn("UI Bindings delayed."); }
 
-        const container = document.getElementById('insights-container');
-        const noDataMsg = document.getElementById('no-data-msg');
-
-        // Auth Guard
+        // Auth Guard & Main Initialization
         onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = 'auth.html';
-            } else {
-                document.getElementById('user-email').textContent = user.email;
-                
-                const profile = await UIManager.init();
-                document.getElementById('user-display-name').textContent = profile.displayName;
-                document.getElementById('user-avatar').src = profile.avatar;
-                
-                renderInsights();
+            try {
+                if (!user) {
+                    window.location.href = 'auth.html';
+                } else {
+                    document.getElementById('user-email').textContent = user.email;
+                    const profile = await UIManager.init();
+                    document.getElementById('user-display-name').textContent = profile.displayName;
+                    document.getElementById('user-avatar').src = profile.avatar;
+                    
+                    renderInsights();
+                }
+            } catch (e) {
+                console.error("Insights Init Failure:", e);
+                renderInsights(null);
             }
         });
-
-        document.getElementById('logout-btn').onclick = () => signOut(auth);
 
         const renderInsights = async () => {
             const data = await Storage.getInsights();
             if (!data) return;
 
+            const container = document.getElementById('insights-container');
+            const noDataMsg = document.getElementById('no-data-msg');
             if (noDataMsg) noDataMsg.remove();
             
             container.innerHTML = `

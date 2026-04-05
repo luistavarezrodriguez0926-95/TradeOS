@@ -193,123 +193,134 @@ export const Storage = {
      * Analytical Engine: Correlates trading performance with habits.
      */
     getInsights: async () => {
-        const trades = await Storage.getTrades();
-        const uid = getUid();
-        const habitsColl = collection(db, "users", uid, "habits");
-        const habitsSnapshot = await getDocs(habitsColl);
-        const habits = {};
-        habitsSnapshot.forEach(doc => {
-            habits[doc.id] = doc.data();
-        });
-        
-        if (trades.length === 0) return null;
-
-        const tradesByDate = {};
-        trades.forEach(t => {
-            const date = t.date ? t.date.split('T')[0] : new Date().toISOString().split('T')[0];
-            if (!tradesByDate[date]) tradesByDate[date] = [];
-            tradesByDate[date].push(t);
-        });
-
-        const weekdayPerf = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-        Object.keys(tradesByDate).forEach(date => {
-            const day = new Date(date).getDay() + 1;
-            if (day >= 1 && day <= 5) {
-                const dailyNet = tradesByDate[date].reduce((sum, t) => sum + (parseFloat(t.result) || 0), 0);
-                weekdayPerf[day] += dailyNet;
-            }
-        });
-
-        let poorSleepWins = 0, poorSleepTotal = 0;
-        let goodSleepWins = 0, goodSleepTotal = 0;
-        let highFocusRR = 0, highFocusCount = 0;
-        let lowFocusRR = 0, lowFocusCount = 0;
-
-        Object.keys(tradesByDate).forEach(date => {
-            const habit = habits[date];
-            const dailyTrades = tradesByDate[date];
+        try {
+            const trades = await Storage.getTrades();
+            const uid = getUid();
+            if (!uid) return null;
+            const habitsColl = collection(db, "users", uid, "habits");
+            const habitsSnapshot = await getDocs(habitsColl);
+            const habits = {};
+            habitsSnapshot.forEach(doc => {
+                habits[doc.id] = doc.data();
+            });
             
-            if (habit) {
-                dailyTrades.forEach(t => {
-                    const res = parseFloat(t.result) || 0;
-                    const rr = parseFloat(t.rRatio) || 0;
-                    
-                    if (habit.sleep < 7) {
-                        poorSleepTotal++;
-                        if (res > 0) poorSleepWins++;
-                    } else {
-                        goodSleepTotal++;
-                        if (res > 0) goodSleepWins++;
-                    }
+            if (trades.length === 0) return null;
 
-                    if (habit.focus >= 7) {
-                        highFocusRR += rr;
-                        highFocusCount++;
-                    } else {
-                        lowFocusRR += rr;
-                        lowFocusCount++;
-                    }
-                });
+            const tradesByDate = {};
+            trades.forEach(t => {
+                const date = t.date ? t.date.split('T')[0] : new Date().toISOString().split('T')[0];
+                if (!tradesByDate[date]) tradesByDate[date] = [];
+                tradesByDate[date].push(t);
+            });
+
+            const weekdayPerf = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+            Object.keys(tradesByDate).forEach(date => {
+                const day = new Date(date).getDay() + 1;
+                if (day >= 1 && day <= 5) {
+                    const dailyNet = tradesByDate[date].reduce((sum, t) => sum + (parseFloat(t.result) || 0), 0);
+                    weekdayPerf[day] += dailyNet;
+                }
+            });
+
+            let poorSleepWins = 0, poorSleepTotal = 0;
+            let goodSleepWins = 0, goodSleepTotal = 0;
+            let highFocusRR = 0, highFocusCount = 0;
+            let lowFocusRR = 0, lowFocusCount = 0;
+
+            Object.keys(tradesByDate).forEach(date => {
+                const habit = habits[date];
+                const dailyTrades = tradesByDate[date];
+                
+                if (habit) {
+                    dailyTrades.forEach(t => {
+                        const res = parseFloat(t.result) || 0;
+                        const rr = parseFloat(t.rRatio) || 0;
+                        
+                        if (habit.sleep < 7) {
+                            poorSleepTotal++;
+                            if (res > 0) poorSleepWins++;
+                        } else {
+                            goodSleepTotal++;
+                            if (res > 0) goodSleepWins++;
+                        }
+
+                        if (habit.focus >= 7) {
+                            highFocusRR += rr;
+                            highFocusCount++;
+                        } else {
+                            lowFocusRR += rr;
+                            lowFocusCount++;
+                        }
+                    });
+                }
+            });
+
+            let poorWinRate = poorSleepTotal > 0 ? (poorSleepWins / poorSleepTotal) : 0;
+            let goodWinRate = goodSleepTotal > 0 ? (goodSleepWins / goodSleepTotal) : 0;
+
+            let leak = "Not enough data for cognitive analysis.";
+            let leakSeverity = 'info';
+
+            if (poorSleepTotal > 2 && poorWinRate < goodWinRate * 0.8) {
+                leak = `Cognitive fatigue detected. Performance drops by ${Math.round((goodWinRate - poorWinRate) * 100)}% when sleep is under 7h.`;
+                leakSeverity = 'critical';
+            } else if (lowFocusCount > 2 && (lowFocusRR / lowFocusCount) < (highFocusRR / highFocusCount) * 0.7) {
+                leak = "Low focus days correlate with poor Execution quality. Avoid high-stakes sessions.";
+                leakSeverity = 'warning';
             }
-        });
 
-        let poorWinRate = poorSleepTotal > 0 ? (poorSleepWins / poorSleepTotal) : 0;
-        let goodWinRate = goodSleepTotal > 0 ? (goodSleepWins / goodSleepTotal) : 0;
-
-        let leak = "Not enough data for cognitive analysis.";
-        let leakSeverity = 'info';
-
-        if (poorSleepTotal > 2 && poorWinRate < goodWinRate * 0.8) {
-            leak = `Cognitive fatigue detected. Performance drops by ${Math.round((goodWinRate - poorWinRate) * 100)}% when sleep is under 7h.`;
-            leakSeverity = 'critical';
-        } else if (lowFocusCount > 2 && (lowFocusRR / lowFocusCount) < (highFocusRR / highFocusCount) * 0.7) {
-            leak = "Low focus days correlate with poor Execution quality. Avoid high-stakes sessions.";
-            leakSeverity = 'warning';
+            return {
+                weekdayPerf,
+                sleepCorrelation: {
+                    poor: Math.round(poorWinRate * 100),
+                    good: Math.round(goodWinRate * 100)
+                },
+                focusCorrelation: {
+                    low: lowFocusCount > 0 ? (lowFocusRR / lowFocusCount).toFixed(2) : 0,
+                    high: highFocusCount > 0 ? (highFocusRR / highFocusCount).toFixed(2) : 0
+                },
+                leak,
+                leakSeverity
+            };
+        } catch (e) {
+            console.warn("Storage.getInsights Error:", e);
+            return null;
         }
-
-        return {
-            weekdayPerf,
-            sleepCorrelation: {
-                poor: Math.round(poorWinRate * 100),
-                good: Math.round(goodWinRate * 100)
-            },
-            focusCorrelation: {
-                low: lowFocusCount > 0 ? (lowFocusRR / lowFocusCount).toFixed(2) : 0,
-                high: highFocusCount > 0 ? (highFocusRR / highFocusCount).toFixed(2) : 0
-            },
-            leak,
-            leakSeverity
-        };
     },
 
     getCalendarEvents: async (dateStr) => {
-        const [year, month, day] = dateStr.split('-').map(Number);
-        const date = new Date(year, month - 1, day);
-        const dayOfMonth = date.getDate();
-        
-        let macroSeeds = [];
-        if (dayOfMonth === 24 || dayOfMonth === 14) {
-            macroSeeds = [
-                { id: 'm1', time: '08:30', asset: 'USD', impact: 'high', title: 'Consumer Price Index (CPI) m/m', forecast: '0.3%', previous: '0.4%', tags: ['SPX', 'NDX'], type: 'macro' },
-                { id: 'm2', time: '10:00', asset: 'USD', impact: 'medium', title: 'CB Consumer Confidence', forecast: '103.9', previous: '103.0', tags: [], type: 'macro' },
-                { id: 'm3', time: '14:00', asset: 'USD', impact: 'high', title: 'FOMC Economic Projections', note: 'Expected: Aggressive Rate Stance', type: 'macro' },
-                { id: 'm4', time: '16:30', asset: 'USD', impact: 'low', title: 'API Weekly Crude Oil Stock', actual: '-2.435M', type: 'macro' }
-            ];
-        } else if (dayOfMonth % 7 === 0) {
-            macroSeeds = [
-                { id: 'm5', time: '09:00', asset: 'EUR', impact: 'medium', title: 'Manufacturing PMI', forecast: '44.5', previous: '43.4', type: 'macro' },
-                { id: 'm6', time: '14:30', asset: 'USD', impact: 'low', title: 'Beige Book', type: 'macro' }
-            ];
+        try {
+            const [year, month, day] = dateStr.split('-').map(Number);
+            const date = new Date(year, month - 1, day);
+            const dayOfMonth = date.getDate();
+            
+            let macroSeeds = [];
+            if (dayOfMonth === 24 || dayOfMonth === 14) {
+                macroSeeds = [
+                    { id: 'm1', time: '08:30', asset: 'USD', impact: 'high', title: 'Consumer Price Index (CPI) m/m', forecast: '0.3%', previous: '0.4%', tags: ['SPX', 'NDX'], type: 'macro' },
+                    { id: 'm2', time: '10:00', asset: 'USD', impact: 'medium', title: 'CB Consumer Confidence', forecast: '103.9', previous: '103.0', tags: [], type: 'macro' },
+                    { id: 'm3', time: '14:00', asset: 'USD', impact: 'high', title: 'FOMC Economic Projections', note: 'Expected: Aggressive Rate Stance', type: 'macro' },
+                    { id: 'm4', time: '16:30', asset: 'USD', impact: 'low', title: 'API Weekly Crude Oil Stock', actual: '-2.435M', type: 'macro' }
+                ];
+            } else if (dayOfMonth % 7 === 0) {
+                macroSeeds = [
+                    { id: 'm5', time: '09:00', asset: 'EUR', impact: 'medium', title: 'Manufacturing PMI', forecast: '44.5', previous: '43.4', type: 'macro' },
+                    { id: 'm6', time: '14:30', asset: 'USD', impact: 'low', title: 'Beige Book', type: 'macro' }
+                ];
+            }
+
+            const uid = getUid();
+            if (!uid) return [...macroSeeds].sort((a, b) => a.time.localeCompare(b.time));
+            const eventsColl = collection(db, "users", uid, "events");
+            const q = query(eventsColl, where("date", "==", dateStr));
+            const snapshot = await getDocs(q);
+            const customEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            return [...macroSeeds, ...customEvents].sort((a, b) => a.time.localeCompare(b.time));
+        } catch (e) {
+            console.warn("Storage.getCalendarEvents Error:", e);
+            return [];
         }
-
-        const uid = getUid();
-        if (!uid) return [...macroSeeds].sort((a, b) => a.time.localeCompare(b.time));
-        const eventsColl = collection(db, "users", uid, "events");
-        const q = query(eventsColl, where("date", "==", dateStr));
-        const snapshot = await getDocs(q);
-        const customEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-        return [...macroSeeds, ...customEvents].sort((a, b) => a.time.localeCompare(b.time));
     },
 
     saveEvent: async (event) => {

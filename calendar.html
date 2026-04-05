@@ -266,26 +266,34 @@
         import { UIManager } from './js/ui-manager.js';
         import { i18n } from './js/i18n.js';
 
-        // Bind Language Switcher
-        document.getElementById('lang-en').onclick = () => UIManager.changeLanguage('en');
-        document.getElementById('lang-es').onclick = () => UIManager.changeLanguage('es');
+        // Bind Language Switcher immediately
+        try {
+            document.getElementById('lang-en').onclick = () => UIManager.changeLanguage('en');
+            document.getElementById('lang-es').onclick = () => UIManager.changeLanguage('es');
+        } catch (e) { console.warn("UI Bindings delayed."); }
 
-        const filterBtns = document.querySelectorAll('.filter-btn');
+        let currentEvents = [];
         let currentDate = new Date();
         let viewDate = new Date(currentDate);
         let selectedImpact = 'all';
 
-        // Auth Guard
+        // Auth Guard & Main Initialization
         onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = 'auth.html';
-            } else {
-                document.getElementById('user-email').textContent = user.email;
-                
-                const profile = await UIManager.init();
-                document.getElementById('user-display-name').textContent = profile.displayName;
-                document.getElementById('user-avatar').src = profile.avatar;
-                
+            try {
+                if (!user) {
+                    window.location.href = 'auth.html';
+                } else {
+                    document.getElementById('user-email').textContent = user.email;
+                    
+                    const profile = await UIManager.init();
+                    document.getElementById('user-display-name').textContent = profile.displayName;
+                    document.getElementById('user-avatar').src = profile.avatar;
+                    
+                    renderEvents();
+                    renderGrid();
+                }
+            } catch (e) {
+                console.error("Calendar Init Failure:", e);
                 renderEvents();
                 renderGrid();
             }

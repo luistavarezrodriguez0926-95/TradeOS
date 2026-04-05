@@ -321,35 +321,47 @@
         document.getElementById('lang-en').onclick = () => UIManager.changeLanguage('en');
         document.getElementById('lang-es').onclick = () => UIManager.changeLanguage('es');
 
+        // Bind Language Switcher & UI Essentials immediately
+        try {
+            document.getElementById('lang-en').onclick = () => UIManager.changeLanguage('en');
+            document.getElementById('lang-es').onclick = () => UIManager.changeLanguage('es');
+        } catch (e) { console.warn("UI Bindings delayed or failed."); }
+
         let currentTrades = [];
         let currentAccount = null;
 
         // Auth Guard & Main Initialization
         onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = 'auth.html';
-            } else {
-                document.getElementById('user-email').textContent = user.email;
-                
-                // Load & Apply Global UI Preferences
-                const profile = await UIManager.init();
-                document.getElementById('user-display-name').textContent = profile.displayName;
-                document.getElementById('user-avatar').src = profile.avatar;
+            try {
+                if (!user) {
+                    window.location.href = 'auth.html';
+                } else {
+                    document.getElementById('user-email').textContent = user.email;
+                    
+                    // Load & Apply Global UI Preferences
+                    const profile = await UIManager.init();
+                    document.getElementById('user-display-name').textContent = profile.displayName;
+                    document.getElementById('user-avatar').src = profile.avatar;
 
-                // Subscribe to Real-time Updates
-                Storage.subscribeToTrades((trades) => {
-                    currentTrades = trades;
-                    updateDashboard();
-                    renderRecentTrades();
-                });
+                    // Subscribe to Real-time Updates
+                    Storage.subscribeToTrades((trades) => {
+                        currentTrades = trades;
+                        updateDashboard();
+                        renderRecentTrades();
+                    });
 
-                Storage.subscribeToAccount((account) => {
-                    currentAccount = account;
-                    updateDashboard();
-                    populateAccountForm();
-                });
+                    Storage.subscribeToAccount((account) => {
+                        currentAccount = account;
+                        updateDashboard();
+                        renderRecentTrades();
+                    });
 
-                // Initial News Fetch
+                    // Initial News Fetch
+                    renderNews();
+                }
+            } catch (initErr) {
+                console.error("System Initialization Halted:", initErr);
+                // Fallback: still try to render news if possible
                 renderNews();
             }
         });
