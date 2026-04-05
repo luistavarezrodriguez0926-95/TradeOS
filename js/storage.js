@@ -152,21 +152,16 @@ export const Storage = {
      * Get habit data for a specific date from Firestore.
      */
     getHabit: async (date) => {
-        const uid = getUid();
-        if (!uid) return { exercise: false, water: 0, sleep: 7, meditation: false, reading: false, stress: 5, focus: 5, notes: '' };
-        const habitRef = doc(db, "users", uid, "habits", date);
-        const docSnap = await getDoc(habitRef);
-        
-        return docSnap.exists() ? docSnap.data() : {
-            exercise: false,
-            water: 0,
-            sleep: 7,
-            meditation: false,
-            reading: false,
-            stress: 5,
-            focus: 5,
-            notes: ''
-        };
+        try {
+            const uid = getUid();
+            if (!uid) return { exercise: false, water: 0, sleep: 7, meditation: false, reading: false, stress: 5, focus: 5, notes: '' };
+            const habitRef = doc(db, "users", uid, "habits", date);
+            const docSnap = await getDoc(habitRef);
+            return docSnap.exists() ? docSnap.data() : { exercise: false, water: 0, sleep: 7, meditation: false, reading: false, stress: 5, focus: 5, notes: '' };
+        } catch (e) {
+            console.warn("Storage.getHabit: Access restricted.", e);
+            return { exercise: false, water: 0, sleep: 7, meditation: false, reading: false, stress: 5, focus: 5, notes: '' };
+        }
     },
 
     /**
@@ -336,27 +331,36 @@ export const Storage = {
     },
 
     getAccount: async () => {
-        const uid = getUid();
-        if (!uid) return { balance: 100000, dailyLimit: 5, maxDrawdown: 10, target: 10, phase: 'Stage 1', manualStatus: null };
-        const accountRef = doc(db, "users", uid, "settings", "account");
-        const docSnap = await getDoc(accountRef);
-        
-        return docSnap.exists() ? docSnap.data() : {
-            balance: 100000,
-            dailyLimit: 5,
-            maxDrawdown: 10,
-            target: 10,
-            phase: 'Evaluation',
-            manualStatus: null
-        };
+        try {
+            const uid = getUid();
+            if (!uid) return { balance: 100000, dailyLimit: 5, maxDrawdown: 10, target: 10, phase: 'Stage 1', manualStatus: null };
+            const accountRef = doc(db, "users", uid, "settings", "account");
+            const docSnap = await getDoc(accountRef);
+            
+            return docSnap.exists() ? docSnap.data() : {
+                balance: 100000,
+                dailyLimit: 5,
+                maxDrawdown: 10,
+                target: 10,
+                phase: 'Evaluation',
+                manualStatus: null
+            };
+        } catch (e) {
+            console.warn("Storage.getAccount: Access restricted.", e);
+            return { balance: 100000, dailyLimit: 5, maxDrawdown: 10, target: 10, phase: 'Stage 1', manualStatus: null };
+        }
     },
 
     saveAccount: async (account) => {
-        const uid = getUid();
-        if (!uid) return;
-        const accountRef = doc(db, "users", uid, "settings", "account");
-        await setDoc(accountRef, account, { merge: true });
-        return account;
+        try {
+            const uid = getUid();
+            if (!uid) return;
+            const accountRef = doc(db, "users", uid, "settings", "account");
+            await setDoc(accountRef, account, { merge: true });
+            return account;
+        } catch (e) {
+            console.error("Storage.saveAccount Error:", e);
+        }
     },
 
     getPropFirmMetrics: async () => {
@@ -388,24 +392,27 @@ export const Storage = {
     },
 
     getProfile: async () => {
-        const uid = getUid();
-        if (!uid) return { displayName: "Admiral", avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", language: "en", theme: "dark", plan: 'pro' };
-        const profileRef = doc(db, "users", uid, "settings", "profile");
-        const docSnap = await getDoc(profileRef);
-        return docSnap.exists() ? docSnap.data() : {
-            displayName: profileData?.displayName || "Admiral",
-            avatar: profileData?.avatar || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-            language: profileData?.language || "en",
-            theme: profileData?.theme || "dark",
-            plan: 'pro'
-        };
+        try {
+            const uid = getUid();
+            if (!uid) return { displayName: "Admiral", avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", language: "en", theme: "dark", plan: 'pro' };
+            const profileRef = doc(db, "users", uid, "settings", "profile");
+            const docSnap = await getDoc(profileRef);
+            return docSnap.exists() ? docSnap.data() : { displayName: "Admiral", avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", language: "en", theme: "dark", plan: 'pro' };
+        } catch (e) {
+            console.warn("Storage.getProfile: Access restricted.", e);
+            return { displayName: "Admiral", avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", language: "en", theme: "dark", plan: 'pro' };
+        }
     },
 
     saveProfile: async (profile) => {
-        const uid = getUid();
-        if (!uid) return;
-        const profileRef = doc(db, "users", uid, "settings", "profile");
-        await setDoc(profileRef, profile, { merge: true });
-        return profile;
-    }
+        try {
+            const uid = getUid();
+            if (!uid) return;
+            const profileRef = doc(db, "users", uid, "settings", "profile");
+            await setDoc(profileRef, profile, { merge: true });
+            return profile;
+        } catch (e) {
+            console.error("Storage.saveProfile Error:", e);
+        }
+    },
 };

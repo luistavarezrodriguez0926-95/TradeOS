@@ -38,6 +38,11 @@ export const NewsService = {
             const response = await fetch(fetchUrl);
             const json = await response.json();
             
+            if (!json || !json.contents) {
+                console.warn("News Intelligence: Orbital link weak (No contents).");
+                return [];
+            }
+
             // Parse XML String from allorigins
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(json.contents, "text/xml");
